@@ -1,0 +1,64 @@
+Ce chapitre décrit les données que nous utiliserons dans ce projet et la façon dont elles seront extraites.
+
+\section{Sources des données}
+
+Deux sources de données sont considérés pour la réalisation du projet: le site web Vivino qui répertorie des vins et le site web Marmiton qui répertorie des recettes.
+
+\subsection{Vivino}
+Vivino est un site web et une application mobile qui permet de trouver des informations sur une grande quantité de vins.
+C'est une plateforme communautaire qui permet aux utilisateurs de donner leur avis sur les vins qu'ils ont dégustés,
+d'en trouver des similaires à ceux qu'ils ont appréciés ou en fonction de leur budget.
+Le site permet de filtrer les vins en fonction de leur couleur, de leur pays d'origine, de leur région, de leur cépage, etc.
+Pour notre projet, nous avons décidé de nous limiter aux vins rouges et blancs provenant de Suisse, d'Argentine, des États-Unis,
+de France, d'Italie et d'Espagne, afin de ne pas avoir une quantité trop importante de données à traiter.
+
+\subsection{Marmiton}
+Marmiton est un site web qui permet de trouver des recettes de cuisine.
+On peut y trouver des recettes de tous types de plats, de l'entrée au dessert.
+Notre projet se concentrant sur les plats principaux, nous avons décidé de nous limiter à cette catégorie.
+
+\section{Description des données}
+
+Les deux sources de données considérées contiennent une certaine quantité d'informations dont certaines ne sont pas pertinentes pour notre projet. Il est donc nécessaire de sélectionner les attributs qui nous seront utiles.
+
+\subsection{Vins}
+
+Les vins répertoriés sur Vivino possèdent une quantité importante d'attributs, nous avons choisi de garder les suivants:
+\begin{itemize}
+    \item \textbf{Nom}: nom du vin.
+    \item \textbf{Nom de la cave}: nom du producteur du vin.
+    \item \textbf{Millésime}: année de production du vin.
+    \item \textbf{Pays d'origine}: pays de production du vin.
+    \item \textbf{Type}: type du vin, soit rouge, soit blanc.
+    \item \textbf{Cépages}: liste des cépages utilisés pour la production du vin.
+    \item \textbf{Prix}: prix d'une bouteille en CHF.
+    \item \textbf{Liste d'accords}: liste des aliments qui s'accordent avec le vin.
+    \item \textbf{Avis des utilisateurs}: liste des trois premiers avis jugés utiles par Vivino. Chaque avis est composé d'une note sur 5.0 et d'un commentaire textuel.
+    \item \textbf{Lien}: lien vers le vin sur le site de Vivino.
+\end{itemize}
+
+\subsection{Recettes}
+
+Les recettes répertoriées sur Marmiton possèdent une quantité importante d'attributs, nous avons choisi de garder les suivants:
+\begin{itemize}
+    \item \textbf{Nom}: nom de la recette.
+    \item \textbf{Type}: type de plat (entrée, plat principal, dessert, etc.).
+    \item \textbf{Liste d'ingrédients}: liste des ingrédients nécessaires à la réalisation de la recette.
+    \item \textbf{Lien}: lien vers la recette sur le site de Marmiton.
+\end{itemize}
+
+\section{Extraction des données}
+
+Les données nécessaires à la réalisation de ce projet sont contenues sur les sites web Vivino et Marmiton. Il est donc nécessaire d'extraire ces données afin de pouvoir les utiliser.
+
+\subsection{Vivino}
+
+Pour extraire les données du site de Vivino, nous utilisons la librairie Python Selenium, qui permet de piloter un navigateur web. De cette manière, nous évitons d'être bloqué par le site, par exemple dans le cas où trop de requêtes sont envoyées. En effet, nous n'avons pas réussi à extraire des données avec la librairie Scrapy, Selenium semble donc être une bonne alternative.
+
+La majorité des informations que nous voulons extraire se trouve sur la page du produit, il est donc nécessaire de récupérer les liens vers ces pages. La page répertoriant les vins ne contient que les 10 premier vins, il faut utiliser un "Infinite Scrolling" afin de charger les vins suivants. Nous chargerons donc entièrement la page en scrollant automatiquement jusqu'à sa fin, puis nous récupérerons les liens vers les pages des vins. Nous visiterons ensuite ces liens un par un pour récupérer les données manquantes.
+
+\subsection{Marmiton}
+
+Pour extraire les données du site Marmiton, nous utilisons la librairie Scrapy, vue en classe durant un laboratoire, qui permet de récupérer des données sur un site web. Nous avons également utilisé BeautifulSoup pour extraire les données de la page HTML, puisque Scrapy ne nous permettait pas de le faire comme nous voulions.
+
+La majorité des informations que nous voulons extraire se trouve sur la page de la recette, il est donc nécessaire de récupérer le lien vers chaque recette. La page contenant les mets ne répertorie que les 30 premières recettes, nous avons dû extraire le lien vers toutes les autres pages afin de toutes les récupérer.

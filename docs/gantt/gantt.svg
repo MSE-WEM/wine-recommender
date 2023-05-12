@@ -1,0 +1,305 @@
+<svg aria-labelledby="chart-title-mermaid-1683473033844" aria-roledescription="gantt" role="graphics-document document" style="max-width: 784px; background-color: white;" viewBox="0 0 784 484" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="100%" id="mermaid-1683473033844"><title id="chart-title-mermaid-1683473033844">Planning - WEM - Wine Recommender</title><style>#mermaid-1683473033844{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}#mermaid-1683473033844 .error-icon{fill:#552222;}#mermaid-1683473033844 .error-text{fill:#552222;stroke:#552222;}#mermaid-1683473033844 .edge-thickness-normal{stroke-width:2px;}#mermaid-1683473033844 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1683473033844 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1683473033844 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1683473033844 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1683473033844 .marker{fill:#000000;stroke:#000000;}#mermaid-1683473033844 .marker.cross{stroke:#000000;}#mermaid-1683473033844 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1683473033844 .mermaid-main-font{font-family:"trebuchet ms",verdana,arial,sans-serif;font-family:var(--mermaid-font-family);}#mermaid-1683473033844 .exclude-range{fill:#eeeeee;}#mermaid-1683473033844 .section{stroke:none;opacity:0.2;}#mermaid-1683473033844 .section0{fill:#6eaa49;}#mermaid-1683473033844 .section2{fill:#6eaa49;}#mermaid-1683473033844 .section1,#mermaid-1683473033844 .section3{fill:white;opacity:0.2;}#mermaid-1683473033844 .sectionTitle0{fill:#333;}#mermaid-1683473033844 .sectionTitle1{fill:#333;}#mermaid-1683473033844 .sectionTitle2{fill:#333;}#mermaid-1683473033844 .sectionTitle3{fill:#333;}#mermaid-1683473033844 .sectionTitle{text-anchor:start;font-family:'trebuchet ms',verdana,arial,sans-serif;font-family:var(--mermaid-font-family);}#mermaid-1683473033844 .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#mermaid-1683473033844 .grid .tick text{font-family:"trebuchet ms",verdana,arial,sans-serif;fill:#000000;}#mermaid-1683473033844 .grid path{stroke-width:0;}#mermaid-1683473033844 .today{fill:none;stroke:red;stroke-width:2px;}#mermaid-1683473033844 .task{stroke-width:2;}#mermaid-1683473033844 .taskText{text-anchor:middle;font-family:'trebuchet ms',verdana,arial,sans-serif;font-family:var(--mermaid-font-family);}#mermaid-1683473033844 .taskTextOutsideRight{fill:black;text-anchor:start;font-family:'trebuchet ms',verdana,arial,sans-serif;font-family:var(--mermaid-font-family);}#mermaid-1683473033844 .taskTextOutsideLeft{fill:black;text-anchor:end;}#mermaid-1683473033844 .task.clickable{cursor:pointer;}#mermaid-1683473033844 .taskText.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#mermaid-1683473033844 .taskTextOutsideLeft.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#mermaid-1683473033844 .taskTextOutsideRight.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#mermaid-1683473033844 .taskText0,#mermaid-1683473033844 .taskText1,#mermaid-1683473033844 .taskText2,#mermaid-1683473033844 .taskText3{fill:white;}#mermaid-1683473033844 .task0,#mermaid-1683473033844 .task1,#mermaid-1683473033844 .task2,#mermaid-1683473033844 .task3{fill:#487e3a;stroke:#13540c;}#mermaid-1683473033844 .taskTextOutside0,#mermaid-1683473033844 .taskTextOutside2{fill:black;}#mermaid-1683473033844 .taskTextOutside1,#mermaid-1683473033844 .taskTextOutside3{fill:black;}#mermaid-1683473033844 .active0,#mermaid-1683473033844 .active1,#mermaid-1683473033844 .active2,#mermaid-1683473033844 .active3{fill:#cde498;stroke:#13540c;}#mermaid-1683473033844 .activeText0,#mermaid-1683473033844 .activeText1,#mermaid-1683473033844 .activeText2,#mermaid-1683473033844 .activeText3{fill:black!important;}#mermaid-1683473033844 .done0,#mermaid-1683473033844 .done1,#mermaid-1683473033844 .done2,#mermaid-1683473033844 .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#mermaid-1683473033844 .doneText0,#mermaid-1683473033844 .doneText1,#mermaid-1683473033844 .doneText2,#mermaid-1683473033844 .doneText3{fill:black!important;}#mermaid-1683473033844 .crit0,#mermaid-1683473033844 .crit1,#mermaid-1683473033844 .crit2,#mermaid-1683473033844 .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#mermaid-1683473033844 .activeCrit0,#mermaid-1683473033844 .activeCrit1,#mermaid-1683473033844 .activeCrit2,#mermaid-1683473033844 .activeCrit3{stroke:#ff8888;fill:#cde498;stroke-width:2;}#mermaid-1683473033844 .doneCrit0,#mermaid-1683473033844 .doneCrit1,#mermaid-1683473033844 .doneCrit2,#mermaid-1683473033844 .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#mermaid-1683473033844 .milestone{transform:rotate(45deg) scale(0.8,0.8);}#mermaid-1683473033844 .milestoneText{font-style:italic;}#mermaid-1683473033844 .doneCritText0,#mermaid-1683473033844 .doneCritText1,#mermaid-1683473033844 .doneCritText2,#mermaid-1683473033844 .doneCritText3{fill:black!important;}#mermaid-1683473033844 .activeCritText0,#mermaid-1683473033844 .activeCritText1,#mermaid-1683473033844 .activeCritText2,#mermaid-1683473033844 .activeCritText3{fill:black!important;}#mermaid-1683473033844 .titleText{text-anchor:middle;font-size:18px;fill:#000000;font-family:'trebuchet ms',verdana,arial,sans-serif;font-family:var(--mermaid-font-family);}#mermaid-1683473033844 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g/><g/><g text-anchor="middle" font-family="sans-serif" font-size="10" fill="none" transform="translate(75, 434)" class="grid"><path d="M0,-399V0H634V-399" stroke="currentColor" class="domain"/><g transform="translate(42,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">23.04.2023</text></g><g transform="translate(116,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">30.04.2023</text></g><g transform="translate(190,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">07.05.2023</text></g><g transform="translate(264,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">14.05.2023</text></g><g transform="translate(338,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">21.05.2023</text></g><g transform="translate(412,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">28.05.2023</text></g><g transform="translate(486,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">04.06.2023</text></g><g transform="translate(560,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">11.06.2023</text></g><g transform="translate(634,0)" opacity="1" class="tick"><line y2="-399" stroke="currentColor"/><text style="text-anchor: middle;" font-size="10" stroke="none" dy="1em" y="3" fill="#000">18.06.2023</text></g></g><g><rect class="section section0" height="24" width="746.5" y="48" x="0"/><rect class="section section0" height="24" width="746.5" y="72" x="0"/><rect class="section section0" height="24" width="746.5" y="96" x="0"/><rect class="section section1" height="24" width="746.5" y="144" x="0"/><rect class="section section1" height="24" width="746.5" y="168" x="0"/><rect class="section section1" height="24" width="746.5" y="192" x="0"/><rect class="section section1" height="24" width="746.5" y="216" x="0"/><rect class="section section0" height="24" width="746.5" y="120" x="0"/><rect class="section section1" height="24" width="746.5" y="384" x="0"/><rect class="section section1" height="24" width="746.5" y="240" x="0"/><rect class="section section2" height="24" width="746.5" y="264" x="0"/><rect class="section section2" height="24" width="746.5" y="288" x="0"/><rect class="section section3" height="24" width="746.5" y="312" x="0"/><rect class="section section0" height="24" width="746.5" y="336" x="0"/><rect class="section section0" height="24" width="746.5" y="360" x="0"/><rect class="section section2" height="24" width="746.5" y="408" x="0"/></g><g><rect class="task task0" transform-origin="75px 60px" height="20" width="0" y="50" x="75" ry="3" rx="3" id="padding1"/><rect class="task task0" transform-origin="101.5px 84px" height="20" width="11" y="74" x="96" ry="3" rx="3" id="int1"/><rect class="task task0" transform-origin="186px 108px" height="20" width="158" y="98" x="107" ry="3" rx="3" id="int2"/><rect class="task task1" transform-origin="265px 156px" height="20" width="148" y="146" x="191" ry="3" rx="3" id="don1"/><rect class="task task1" transform-origin="265px 180px" height="20" width="148" y="170" x="191" ry="3" rx="3" id="don2"/><rect class="task task1" transform-origin="201.5px 204px" height="20" width="21" y="194" x="191" ry="3" rx="3" id="don3"/><rect class="task task1" transform-origin="275.5px 228px" height="20" width="127" y="218" x="212" ry="3" rx="3" id="don4"/><rect class="task milestone  crit0" transform-origin="265px 132px" height="20" width="20" y="122" x="255" ry="3" rx="3" id="m1"/><rect class="task task1" transform-origin="487px 396px" height="20" width="444" y="386" x="265" ry="3" rx="3" id="doc1"/><rect class="task milestone  activeCrit1" transform-origin="339px 252px" height="20" width="20" y="242" x="329" ry="3" rx="3" id="m2"/><rect class="task task2" transform-origin="487px 276px" height="20" width="296" y="266" x="339" ry="3" rx="3" id="ana1"/><rect class="task task2" transform-origin="487px 300px" height="20" width="296" y="290" x="339" ry="3" rx="3" id="ana2"/><rect class="task task3" transform-origin="487px 324px" height="20" width="296" y="314" x="339" ry="3" rx="3" id="fro1"/><rect class="task milestone  activeCrit0" transform-origin="635px 348px" height="20" width="20" y="338" x="625" ry="3" rx="3" id="m3"/><rect class="task task0" transform-origin="672px 372px" height="20" width="74" y="362" x="635" ry="3" rx="3" id="tes1"/><rect class="task milestone  crit2" transform-origin="709px 420px" height="20" width="20" y="410" x="699" ry="3" rx="3" id="m4"/><text class="taskText taskText0  width-0" y="63.5" x="75" font-size="11" id="padding1-text">‎                            </text><text class="taskTextOutsideRight taskTextOutside0  width-109.7265625" y="87.5" x="112" font-size="11" id="int1-text">Introduction au projet              </text><text class="taskText taskText0  width-152.15625" y="111.5" x="186" font-size="11" id="int2-text">Création du cahier des charges      </text><text class="taskTextOutsideRight taskTextOutside1  width-177.7578125" y="159.5" x="344" font-size="11" id="don1-text">Récupération des données de Vivino  </text><text class="taskTextOutsideRight taskTextOutside1  width-194.328125" y="183.5" x="344" font-size="11" id="don2-text">Récupération des données de Marmiton</text><text class="taskTextOutsideRight taskTextOutside1  width-139.3203125" y="207.5" x="217" font-size="11" id="don3-text">Création de la base données         </text><text class="taskTextOutsideRight taskTextOutside1  width-161.875" y="231.5" x="344" font-size="11" id="don4-text">Stockage des données dans la DB     </text><text class="taskTextOutsideRight taskTextOutside0  critText0 milestoneText width-140.21875" y="135.5" x="280" font-size="11" id="m1-text">Rendu du cahier des charges         </text><text class="taskText taskText1  width-124.265625" y="399.5" x="487" font-size="11" id="doc1-text">Documentation du projet             </text><text class="taskTextOutsideRight taskTextOutside1 activeCritText1 critText1 milestoneText width-131.25" y="255.5" x="354" font-size="11" id="m2-text">Base de données complète            </text><text class="taskText taskText2  width-110.0703125" y="279.5" x="487" font-size="11" id="ana1-text">Analyse de sentiments               </text><text class="taskText taskText2  width-117.96875" y="303.5" x="487" font-size="11" id="ana2-text">Recommandation de vin               </text><text class="taskText taskText3  width-153.265625" y="327.5" x="487" font-size="11" id="fro1-text">Création d'une application web      </text><text class="taskTextOutsideLeft taskTextOutside0 activeCritText0 critText0 milestoneText" y="351.5" x="620" font-size="11" id="m3-text">Application fonctionnelle           </text><text class="taskTextOutsideLeft taskTextOutside0" y="375.5" x="630" font-size="11" id="tes1-text">Tests fonctionnels                  </text><text class="taskTextOutsideLeft taskTextOutside2  critText2 milestoneText" y="423.5" x="694" font-size="11" id="m4-text">Rendu du projet                     </text></g><g><text class="sectionTitle sectionTitle0" font-size="11" y="98" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Introduction</tspan></text><text class="sectionTitle sectionTitle1" font-size="11" y="206" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Données</tspan></text><text class="sectionTitle sectionTitle2" font-size="11" y="290" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Analyse</tspan></text><text class="sectionTitle sectionTitle3" font-size="11" y="326" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Frontend</tspan></text><text class="sectionTitle sectionTitle0" font-size="11" y="362" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Tests</tspan></text><text class="sectionTitle sectionTitle1" font-size="11" y="398" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Documentation</tspan></text><text class="sectionTitle sectionTitle2" font-size="11" y="422" x="10" dy="0em"><tspan x="10" alignment-baseline="central">Fin de projet</tspan></text></g><text class="titleText" y="25" x="392">Planning - WEM - Wine Recommender</text><style>#container &gt; svg {
+    max-width: 100% !important;
+}
+
+#graph-div {
+    font-family: "trebuchet ms", verdana, arial, sans-serif;
+    font-size: 16px;
+    fill: #000000;
+}
+
+#graph-div .error-icon {
+    fill: #552222;
+}
+
+#graph-div .error-text {
+    fill: #552222;
+    stroke: #552222;
+}
+
+#graph-div .edge-thickness-normal {
+    stroke-width: 2px;
+}
+
+#graph-div .edge-thickness-thick {
+    stroke-width: 3.5px;
+}
+
+#graph-div .edge-pattern-solid {
+    stroke-dasharray: 0;
+}
+
+#graph-div .edge-pattern-dashed {
+    stroke-dasharray: 3;
+}
+
+#graph-div .edge-pattern-dotted {
+    stroke-dasharray: 2;
+}
+
+#graph-div .marker {
+    fill: #000000;
+    stroke: #000000;
+}
+
+#graph-div .marker.cross {
+    stroke: #000000;
+}
+
+#graph-div svg {
+    font-family: "trebuchet ms", verdana, arial, sans-serif;
+    font-size: 16px;
+}
+
+#graph-div .mermaid-main-font {
+    font-family: "trebuchet ms", verdana, arial, sans-serif;
+    font-family: var(--mermaid-font-family);
+}
+
+#graph-div .exclude-range {
+    fill: #eeeeee;
+}
+
+#graph-div .section {
+    stroke: none;
+    opacity: 0.2;
+}
+
+#graph-div .section0 {
+    fill: #6eaa49;
+}
+
+#graph-div .section2 {
+    fill: #6eaa49;
+}
+
+#graph-div .section1,
+#graph-div .section3 {
+    fill: white;
+    opacity: 0.2;
+}
+
+#graph-div .sectionTitle0 {
+    fill: #333;
+}
+
+#graph-div .sectionTitle1 {
+    fill: #333;
+}
+
+#graph-div .sectionTitle2 {
+    fill: #333;
+}
+
+#graph-div .sectionTitle3 {
+    fill: #333;
+}
+
+#graph-div .sectionTitle {
+    text-anchor: start;
+
+    font-family: 'trebuchet ms', verdana, arial, sans-serif;
+    font-family: var(--mermaid-font-family);
+}
+
+#graph-div .grid .tick {
+    stroke: lightgrey;
+    opacity: 0.8;
+    shape-rendering: crispEdges;
+}
+
+#graph-div .grid .tick text {
+    font-family: "trebuchet ms", verdana, arial, sans-serif;
+    fill: #000000;
+}
+
+#graph-div .grid path {
+    stroke-width: 0;
+}
+
+#graph-div .today {
+    fill: none;
+    stroke: red;
+    stroke-width: 2px;
+}
+
+#graph-div .task {
+    stroke-width: 2;
+}
+
+#graph-div .taskText {
+    text-anchor: middle;
+
+    font-family: 'trebuchet ms', verdana, arial, sans-serif;
+    font-family: var(--mermaid-font-family);
+}
+
+#graph-div .taskTextOutsideRight {
+    fill: black;
+    text-anchor: start;
+
+    font-family: 'trebuchet ms', verdana, arial, sans-serif;
+    font-family: var(--mermaid-font-family);
+}
+
+#graph-div .taskTextOutsideLeft {
+    fill: black;
+    text-anchor: end;
+}
+
+#graph-div .task.clickable {
+    cursor: pointer;
+}
+
+#graph-div .taskText.clickable {
+    cursor: pointer;
+    fill: #003163 !important;
+    font-weight: bold;
+}
+
+#graph-div .taskTextOutsideLeft.clickable {
+    cursor: pointer;
+    fill: #003163 !important;
+    font-weight: bold;
+}
+
+#graph-div .taskTextOutsideRight.clickable {
+    cursor: pointer;
+    fill: #003163 !important;
+    font-weight: bold;
+}
+
+#graph-div .taskText0,
+#graph-div .taskText1,
+#graph-div .taskText2,
+#graph-div .taskText3 {
+    fill: white;
+}
+
+#graph-div .task0,
+#graph-div .task1,
+#graph-div .task2,
+#graph-div .task3 {
+    fill: #487e3a;
+    stroke: #13540c;
+}
+
+#graph-div .taskTextOutside0,
+#graph-div .taskTextOutside2 {
+    fill: black;
+}
+
+#graph-div .taskTextOutside1,
+#graph-div .taskTextOutside3 {
+    fill: black;
+}
+
+#graph-div .active0,
+#graph-div .active1,
+#graph-div .active2,
+#graph-div .active3 {
+    fill: #cde498;
+    stroke: #13540c;
+}
+
+#graph-div .activeText0,
+#graph-div .activeText1,
+#graph-div .activeText2,
+#graph-div .activeText3 {
+    fill: black !important;
+}
+
+#graph-div .done0,
+#graph-div .done1,
+#graph-div .done2,
+#graph-div .done3 {
+    stroke: grey;
+    fill: lightgrey;
+    stroke-width: 2;
+}
+
+#graph-div .doneText0,
+#graph-div .doneText1,
+#graph-div .doneText2,
+#graph-div .doneText3 {
+    fill: black !important;
+}
+
+#graph-div .crit0,
+#graph-div .crit1,
+#graph-div .crit2,
+#graph-div .crit3 {
+    stroke: #ff8888;
+    fill: red;
+    stroke-width: 2;
+}
+
+#graph-div .activeCrit0,
+#graph-div .activeCrit1,
+#graph-div .activeCrit2,
+#graph-div .activeCrit3 {
+    stroke: #ff8888;
+    fill: #cde498;
+    stroke-width: 2;
+}
+
+#graph-div .doneCrit0,
+#graph-div .doneCrit1,
+#graph-div .doneCrit2,
+#graph-div .doneCrit3 {
+    stroke: #ff8888;
+    fill: lightgrey;
+    stroke-width: 2;
+    cursor: pointer;
+    shape-rendering: crispEdges;
+}
+
+#graph-div .milestone {
+    transform: rotate(45deg) scale(0.8, 0.8);
+}
+
+#graph-div .milestoneText {
+    font-style: italic;
+}
+
+#graph-div .doneCritText0,
+#graph-div .doneCritText1,
+#graph-div .doneCritText2,
+#graph-div .doneCritText3 {
+    fill: black !important;
+}
+
+#graph-div .activeCritText0,
+#graph-div .activeCritText1,
+#graph-div .activeCritText2,
+#graph-div .activeCritText3 {
+    fill: black !important;
+}
+
+#graph-div .titleText {
+    text-anchor: middle;
+    font-size: 18px;
+    fill: #000000;
+
+    font-family: 'trebuchet ms', verdana, arial, sans-serif;
+    font-family: var(--mermaid-font-family);
+}
+
+#graph-div :root {
+    --mermaid-font-family: "trebuchet ms", verdana, arial, sans-serif;
+}
+
+#ana1, #don1 {
+    fill: #0550bb !important;
+    stroke: #0c2454 !important;
+}
+
+#ana2, #don2 {
+    fill: #ffa600 !important;
+    stroke: #ff8400 !important;
+}
+
+#fro1, #don3, #don4 {
+    fill: #f25e5e !important;
+    stroke: #ff0000 !important;
+}</style></svg>

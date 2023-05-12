@@ -1,0 +1,25 @@
+Ce dernier chapitre décrit les résultats attendus ainsi que les risques qui peuvent survenir lors de la réalisation de ce projet.
+
+\section{Résultats attendus}
+
+Le résultat final attendu est une page web qui permet à l'utilisateur de choisir une recette dans une liste ou en faisant une recherche. Une fois la recette choisie, l'utilisateur doit pouvoir voir les ingrédients nécessaires à la réalisation de la recette ainsi que les vins qui s'accordent avec cette dernière. Il doit également être possible de filtrer les recettes et les vins résultants en fonction de différents critères. Par exemple, on pourra filtrer les vins en fonction de leur prix, de leur pays d'origine, de leur type, etc. et les recettes en fonction des ingrédients nécessaires à leur préparation. La page web doit également retourner à l'utilisateur un sentiment décrivant les avis jugés utiles par Vivino. Ce sentiment doit être accompagné des mots les plus importants utilisés pour le jugement.
+
+Bien entendu, il est attendu de l'application que les résultats retournés soient cohérents et que les vins proposés s'accordent bel et bien avec la recette choisie.
+
+\section{Risques}
+
+Quelques risques peuvent survenir lors de la réalisation de ce projet et ainsi influencer la qualité des résultats attendus.
+
+\subsection{Précision de la recommandation}
+
+Le premier risque est la précision de la correspondance des ingrédients. En effet, il est possible que la méthode de génération d'embedding et le calcul de similarité ne soit pas assez précis pour lier correctement les accords aux ingrédients de la recette. Dans ce cas, il sera nécessaire de trouver une autre méthode plus efficace. 
+
+Il est également possible que les accords des vins soient souvent les mêmes et que l'application recommande souvent les mêmes vins pour des recettes différentes. Dans ce cas, il est difficile d'adapter la méthode puisque la cause du problème est le manque de diversité des accords des vins. Il serait donc nécessaire de trouver une autre source de données pour les accords des vins.
+
+\subsection{Fiabilité de l'analyse des sentiments}
+
+L'analyse des sentiments comporte également un risque. En effet, il est possible que les résultats de l'analyse ne soit pas fiable et que les avis jugés utiles par Vivino ne soient pas représentatifs de l'avis général des utilisateurs. Dans ce cas, il faudrait considérer une plus grande quantité d'avis utilisateur.
+
+\subsection{Subjectivité du goût}
+
+La subjectvité du goût est un risque sur lequel il est difficile d'agir, bien qu'il soit important de le mentionner. En effet, il est possible que les vins qui s'accordent avec une recette ne soient pas au goût de l'utilisateur. Il faudrait donc, si le temps le permet, ajouter une fonctionnalité permettant à l'utilisateur d'obtenir d'autres vins qui s'accordent avec la recette.

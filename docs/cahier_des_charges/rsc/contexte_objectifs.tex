@@ -1,0 +1,26 @@
+Dans le cadre du cours de Web Mining, il est demandé de réaliser un projet de récupération et d'analyse de données.
+Le sujet choisi pour ce dernier est la création d'un système de recommandation de vin en fonction d'une recette.
+
+
+\section{Contexte}
+Lorsque nous choisissons de préparer une recette, nous nous demandons parfois quel vin accompagnerait le mieux ce plat. 
+En règle générale, les descriptifs de vins viennent accompagnés d'une recommandation du style "boeuf", "poulet", "poisson", etc.
+Mais ces recommandations sont souvent trop générales et ne permettent pas de choisir un vin adapté à la recette. 
+De plus, il est difficile de trouver des informations sur les vins, notamment sur les vins de qualité moyenne ou inférieure. 
+C'est pourquoi nous avons décidé de créer un système de recommandation de vin en fonction d'une recette sous forme d'une application web.
+
+Pour ce faire, deux sources de données seront utilisées:
+\begin{itemize}
+    \item \href{https://www.vivino.com/}{\textbf{Vivino}}: pour la récupération des données sur les vins.
+    \item \href{https://www.marmiton.org/recettes/index/categorie/plat-principal/}{\textbf{Marmiton}}: pour la récupération des données sur les recettes.
+\end{itemize}
+
+Afin de traiter une quantité de données raisonnable, nous nous limitons aux plats principaux pour les recettes et aux vins rouges et blancs pour les vins.
+
+\section{Objectifs}
+La réalisation du projet est composé de trois parties principales:
+\begin{itemize}
+    \item \textbf{Récupération des données}: récupération des données sur les vins et les recettes.
+    \item \textbf{Création de l'API}: création d'une API REST pour servir les données.
+    \item \textbf{Création de l'application web}: création d'une application web pour la recommandation de vin.
+\end{itemize}

@@ -1,0 +1,37 @@
+%%{init: {'theme':'forest'}}%%
+gantt
+    title Planning - WEM - Wine Recommender
+    dateFormat  DD.MM
+    todayMarker off
+    axisFormat %d.%m.%Y
+
+    section Introduction
+    ‎                            :padding1, 19.04, 0d
+    Introduction au projet              :int1, 21.04, 1d
+    Création du cahier des charges      :int2, after int1, 15d
+    Rendu du cahier des charges         :crit, milestone, m1, 07.05,
+
+    section Données
+    Récupération des données de Vivino  :don1, 30.04, 14d
+    Récupération des données de Marmiton:don2, 30.04, 14d
+    Création de la base données         :don3, 30.04, 2d
+    Stockage des données dans la DB     :don4, 02.05, 12d
+    Base de données complète            :crit, active, milestone, m2, 14.05, 
+
+    section Analyse
+    Analyse de sentiments               :ana1, after don4, 28d
+    Recommandation de vin               :ana2, after don4, 28d
+
+    section Frontend
+    Création d'une application web      :fro1, after don4, 28d
+
+    section Tests
+    Application fonctionnelle           :crit, active, milestone, m3, 11.06,
+    Tests fonctionnels                  :tes1, after ana2, 7d
+
+    section Documentation
+    Documentation du projet             :doc1, after m1, 18.06
+
+    section Fin de projet
+    Rendu du projet                     :crit, milestone, m4, 18.06,
+
