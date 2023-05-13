@@ -34,32 +34,19 @@ driver = webdriver.Firefox()
 driver.maximize_window()
 
 # Navigate to the URL
-driver.get("https://www.vivino.com/explore?e=eJzLLbI1VMvNzLM1UMtNrLA1NTBQS660dfZQSwYSbmoFQNn0NNuyxKLM1JLEHLX8ohRbtfykSlu18pLoWKAkmDIC6ikG0olFANRdGVE%3D")
+driver.get("https://www.vivino.com/explore?e=eJzLLbI11rNQy83MszU3UMtNrLA1NDRQS660dfZQSwYSbmoFtoZq6Wm2ZYlFmakliTlq-UUptmr5SZW2auUl0bFAyeTKYiCdnAEAW1sXrQ%3D%3D")
 
 # Wait for the page to load and the div to be present
 wait = WebDriverWait(driver, 10)
 
 scroll_down(driver)
 
-divs = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.wineInfo__wineInfo--Sx0T0")))
-
-wines_info = {}
-
-# Loop through the divs and print the title
-for div in divs:
-    cave = div.find_element(By.CSS_SELECTOR, "div.wineInfoVintage__truncate--3QAtw").text
-    name = div.find_element(By.CSS_SELECTOR, "div.wineInfoVintage__vintage--VvWlU").text
-    location = div.find_element(By.CSS_SELECTOR, "div.wineInfoLocation__regionAndCountry--1nEJz").text
-    wines_info[str(uuid.uuid4())] = {
-        "cave": cave,
-        "name": name,
-        "location": location
-    }
-
-print(len(wines_info.keys()))
+a_tags = driver.find_elements(By.CLASS_NAME, 'wineCard__cardLink--3F_uB')
+# get the href attribute for each a tag
+hrefs = [a_tag.get_attribute('href') for a_tag in a_tags]
+print(len(hrefs))
+# save the hrefs to a file
+with open('wine_links.json', 'w') as f:
+    json.dump(hrefs, f)
 driver.quit()
-
-# save the json
-with open("data/wine_scrapped_data.json", "w") as f:
-    f.write(json.dumps(wines_info, indent=4))
 
