@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: wine-recommender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-pvc
+              mountPath: /data/db
+          
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+  labels:
+    app: mongodb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+  namespace: wine-recommender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+        - name: mongo-express
+          image: mongo-express:latest
+          env:
+            - name: ME_CONFIG_MONGODB_SERVER
+              value: mongodb-wine-recommender.kube.isc.heia-fr.ch
+            - name: ME_CONFIG_MONGODB_PORT
+              value: "27017"
+          ports:
+            - containerPort: 8081
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express
+  namespace: wine-recommender
+spec:
+  selector:
+    app: mongo-express
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8081
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  namespace: wine-recommender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+        - name: nodejs-app
+          image: your-nodejs-app-image:latest
+          ports:
+            - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-app
+  namespace: wine-recommender
+spec:
+  selector:
+    app: nodejs-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongo-express-ingress
+  namespace: wine-recommender
+spec:
+  rules:
+    - host: wine-recommender.kube.isc.heia-fr.ch
+      http:
+        paths:
+          - path: /mongo-express
+            pathType: Prefix
+            backend:
+              service:
+                name: mongo-express
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nodejs-app
+                port:
+                  number: 80
