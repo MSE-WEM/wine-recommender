@@ -31,6 +31,37 @@ exports.create = (req, res) => {
         });
 };
 
+// Create many new Recipes
+exports.createMany = (req, res) => {
+    // Validate request
+    if (!req.body.recipes) {
+        res.status(400).send({ message: "Content can not be empty!" });
+        return;
+    }
+
+    // Create a Recipe
+    const recipes = req.body.recipes.map(recipe => {
+        return new Recipe({
+            name: recipe.name,
+            type: recipe.type,
+            ingredients: recipe.ingredients,
+            link: recipe.link,
+        });
+    });
+
+    // Save Recipe in the database
+    Recipe.insertMany(recipes)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the Recipe."
+            });
+        });
+};
+
 // Retrieve all Recipes from the database.
 exports.findAll = (req, res) => {
     const name = req.query.name;

@@ -8,6 +8,9 @@ module.exports = app => {
     // Create a new Recipe
     router.post("/recipes", recipes.create);
 
+    // Create many new Recipes
+    router.post("/recipes/many", recipes.createMany);
+
     // Retrieve all Recipes
     router.get("/recipes", recipes.findAll);
 

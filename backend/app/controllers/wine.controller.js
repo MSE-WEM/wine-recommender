@@ -30,6 +30,36 @@ exports.create = (req, res) => {
         });
 };
 
+// Create many new Wines
+exports.createMany = (req, res) => {
+    // Validate request
+    if (!req.body.wines) {
+        res.status(400).send({ message: "Content can not be empty!" });
+        return;
+    }
+
+    // Create a Wine
+    const wines = req.body.wines.map(wine => {
+        return new Wine({
+            name: wine.name,
+            cave: wine.cave,
+            location: wine.location,
+        });
+    });
+
+    // Save Wine in the database
+    Wine.insertMany(wines)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the Wine."
+            });
+        });
+};
+
 // Retrieve all Wines from the database.
 exports.findAll = (req, res) => {
     const name = req.query.name;
