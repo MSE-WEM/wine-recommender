@@ -11,7 +11,7 @@ on:
   push:
     paths:
       - .github/workflows/publish.yml
-      - backend
+      - backend/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -41,16 +41,12 @@ jobs:
         working-directory: ./backend/kubernetes
         env:
           # url is the mongodb deployment on port 27017
-          MONGODB_URL: mongodb://mongodb:27017
+          MONGODB_URL: mongodb://mongodb-service:27017
         run: |
           # Set version
           docker_image_tags=(${{ steps.build-and-push-docker-image-to-github.outputs.docker-image-tags }})
           docker_image_sha_tag="${docker_image_tags[1]}"
-          docker_image_version_tag="${docker_image_tags[2]}"
-          # Replace the image tag in the kube-config.yml file
-          sed -i "s|image: .*|image: ghcr.io/${{ github.repository }}-node-mongo-app:${docker_image_version_tag}|" kube-config.yml
-          # Replace the mongodb url in the kube-config.yml file
-          sed -i "s|MONGODB_URL: .*|MONGODB_URL: ${MONGODB_URL}|" kube-config.yml
+          yq e '.spec.template.spec.containers[] | select(.name == "nodejs-app").image = "$docker_image_sha_tag"' kube-config.yml > new-kube-config.yml && mv new-kube-config.yml kube-config.stateful.yml
 
       - name: Deploy on the Kubernetes cluster
         # Only run on main

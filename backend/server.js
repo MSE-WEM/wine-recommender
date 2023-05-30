@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:8081/"
 };
 
 app.use(cors(corsOptions));
@@ -16,8 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
+const db_url = (process.env.MONGODB_URL || "mongodb://localhost:27017") + "/wine-recommender";
+
+db.mongoose.set('strictQuery', false);
 db.mongoose
-  .connect(db.url, {
+  .connect(db_url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -31,13 +34,13 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Wine Recommender application." });
+  res.json({ message: "Welcome to Wine Recommender." });
 });
 
-require("./app/routes/wine.routes")(app);
 require("./app/routes/recipe.routes")(app);
+require("./app/routes/wine.routes")(app);
 
-// set port, listen for requests
+// set port, listen for requests on /app 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
