@@ -160,6 +160,14 @@ kind: Ingress
 metadata:
   name: nodejs-app-ingress
   namespace: wine-recommender
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      location /api/recipes/many {
+        client_max_body_size 50M;
+      }
+      location /api/wines/many {
+        client_max_body_size 50M;
+      }
 spec:
   rules:
     - host: api-wine-recommender.kube.isc.heia-fr.ch
