@@ -1,3 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  namespace: wine-recommender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+        - name: nodejs-app
+          image: ghcr.io/mse-wem/wine-recommender-node-mongo-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGODB_URL
+              value: mongodb://mongodb-service:27017
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -97,32 +124,6 @@ spec:
     - name: http
       port: 80
       targetPort: 8081
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nodejs-app
-  namespace: wine-recommender
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nodejs-app
-  template:
-    metadata:
-      labels:
-        app: nodejs-app
-    spec:
-      containers:
-        - name: nodejs-app
-          image: ghcr.io/mse-wem/wine-recommender-node-mongo-app:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 3000
-          env:
-            - name: MONGODB_URL
-              value: mongodb://mongodb-service:27017
 
 ---
 apiVersion: v1
