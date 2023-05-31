@@ -1,47 +1,37 @@
 import React from 'react';
-import './App.css';
 import {
     AppBar,
-    Container,
-    createTheme,
-    CssBaseline,
     Grid,
     IconButton,
     Link,
     PaletteMode,
-    ThemeProvider,
-    Toolbar, Tooltip
+    Toolbar,
+    Tooltip
 } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toggleColorMode } from './utils/reducers/colorModeSlice';
-import { LightMode, DarkMode, WineBarTwoTone as WineBar } from '@mui/icons-material';
+import {
+    LightMode,
+    DarkMode,
+    Menu as MenuIcon,
+    MenuOpen as CloseIcon
+} from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 import Home from './pages/Home';
-import { useNotification } from './utils/useNotification';
-
-declare module '@mui/material/styles' {
-    interface Palette {
-        background_color: Palette['primary'];
-    }
-
-    interface PaletteOptions {
-        background_color: PaletteOptions['primary'];
-    }
-}
-
-// declare module to extend the theme colors
-declare module '@mui/material/AppBar' {
-    interface AppBarPropsColorOverrides {
-        background_color: true;
-    }
-}
 
 function App() {
     const lightgrey = grey[300];
     const darkgrey = grey[900];
     const dispatch = useDispatch();
     const colorMode = useSelector((state: any) => state.colorMode.value);
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
     const getDesignTokens = (mode: PaletteMode) => ({
         palette: {
@@ -72,6 +62,9 @@ function App() {
                     }
                 }),
         },
+        typography: {
+            fontFamily: ["Neue Haas Grotesk Display Pro, sans-serif", "Helvetica now, sans-serif"].join(','),
+        }
     });
 
 
@@ -90,15 +83,26 @@ function App() {
             {/* End CssBaseline */}
 
             {/* Header navbar */}
-            <AppBar color={"primary"} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="fixed"
+                    elevation={1}
+                    sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}
+            >
                 <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{mr: 2, display: {md: 'none'}}}
+                    >
+                        {mobileOpen ? <CloseIcon/> : <MenuIcon/>}
+                    </IconButton>
                     <Grid container justifyContent={"space-between"} alignItems={"center"} sx={{height: "100%"}}>
                         <Grid item>
                             <Link color={"inherit"} href={"/"} underline={"none"}>
-                                {/*<img src={colorMode === "light" ? "/logo_full.png" : "/logo_full_white.png"}
-                                     alt={"Logo"} height={"40px"}
-                                     style={{marginRight: "10px", marginTop: "2px"}}/>*/}
-                                <WineBar sx={{color: "white", marginRight: "10px", fontSize: "30px"}}/>
+                                <img src={colorMode === 'light' ? "/logo512_light.png" : "/logo512.png"}
+                                     alt={"Wine Recommender"} height={"30px"}
+                                     style={{marginRight: "10px", marginTop: "5px", borderRadius: "4px"}}/>
                             </Link>
                         </Grid>
                         <Grid item>
@@ -114,15 +118,14 @@ function App() {
             </AppBar>
             {/* End Header navbar */}
 
-            <Container>
-                {/* Main content */}
-                <Router>
-                    <Routes>
-                        <Route path={"*"} element={<Home/>}/>
-                    </Routes>
-                </Router>
-                {/* End Main content */}
-            </Container>
+            {/* Main content */}
+            <Router>
+                <Routes>
+                    <Route path={"*"}
+                           element={<Home mobileOpen={mobileOpen} handleOpen={handleDrawerToggle}/>}/>
+                </Routes>
+            </Router>
+            {/* End Main content */}
 
         </ThemeProvider>
     );

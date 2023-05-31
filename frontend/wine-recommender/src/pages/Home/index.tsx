@@ -6,15 +6,20 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { FilterDrawer } from '../../components/FilterDrawer';
+import { WineDataGrid } from '../../components/WineDataGrid';
 
+const isSmartphone = (): boolean => {
+    return window.innerWidth < 600;
+}
+const maxWidth = isSmartphone() ? '100%' : 600;
 
-const Home: React.FC = () => {
+const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, handleOpen}) => {
     return (
         <Box sx={{display: 'flex'}}>
-            <FilterDrawer />
-            <Box component="main" sx={{flexGrow: 1, p: 3}}>
+            <FilterDrawer mobileOpen={mobileOpen} handleOpen={handleOpen}/>
+            <Box component="main" sx={{flexGrow: 1, p: 2, pt: 4, pb: 3}}>
                 <Toolbar/>
-                <Container maxWidth="lg">
+                <Container>
                     <Typography
                         component="h1"
                         variant="h2"
@@ -29,11 +34,13 @@ const Home: React.FC = () => {
                         recettes de Marmiton.
                     </Typography>
                 </Container>
+                <Container sx={{py: 4, maxWidth: maxWidth}}>
+                    <WineDataGrid/>
+                </Container>
             </Box>
         </Box>
 
-    )
-        ;
+    );
 }
 
 
