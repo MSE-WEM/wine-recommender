@@ -12,8 +12,21 @@ exports.create = (req, res) => {
     // Create a Wine
     const wine = new Wine({
         name: req.body.name,
-        cave: req.body.cave,
-        location: req.body.location,
+        winery: req.body.winery,
+        vintage: req.body.vintage,
+        img_url: req.body.img_url,
+        country: req.body.country,
+        region: req.body.region,
+        type: req.body.type,
+        grapes: req.body.grapes,
+        price: req.body.price,
+        pairings: req.body.pairings,
+        average_rating: req.body.average_rating,
+        reviews: req.body.reviews,
+        url: req.body.url,
+        embedding: req.body.embedding,
+        sentiment: req.body.sentiment,
+        emotions: req.body.emotions
     });
 
     // Save Wine in the database
@@ -42,8 +55,21 @@ exports.createMany = (req, res) => {
     const wines = req.body.wines.map(wine => {
         return new Wine({
             name: wine.name,
-            cave: wine.cave,
-            location: wine.location,
+            winery: wine.winery,
+            vintage: wine.vintage,
+            img_url: wine.img_url,
+            country: wine.country,
+            region: wine.region,
+            type: wine.type,
+            grapes: wine.grapes,
+            price: wine.price,
+            pairings: wine.pairings,
+            average_rating: wine.average_rating,
+            reviews: wine.reviews,
+            url: wine.url,
+            embedding: wine.embedding,
+            sentiment: wine.sentiment,
+            emotions: wine.emotions
         });
     });
 

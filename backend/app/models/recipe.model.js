@@ -1,12 +1,11 @@
-const { v4: uuidv4 } = require('uuid');
 module.exports = mongoose => {
     var schema = mongoose.Schema(
         {
-            id: { type: String, default: uuidv4 },
             name: String,
             type: String,
             ingredients: [String],
-            link: String,
+            url: String,
+            embedding: [Number]
         },
         { timestamps: true }
     );

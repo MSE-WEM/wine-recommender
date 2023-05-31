@@ -14,7 +14,8 @@ exports.create = (req, res) => {
         name: req.body.name,
         type: req.body.type,
         ingredients: req.body.ingredients,
-        link: req.body.link,
+        url: req.body.url,
+        embedding: req.body.embedding
     });
 
     // Save Recipe in the database
@@ -45,7 +46,8 @@ exports.createMany = (req, res) => {
             name: recipe.name,
             type: recipe.type,
             ingredients: recipe.ingredients,
-            link: recipe.link,
+            url: recipe.url,
+            embedding: recipe.embedding
         });
     });
 

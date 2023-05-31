@@ -1,18 +1,22 @@
-const { v4: uuidv4 } = require('uuid');
 module.exports = mongoose => {
   var schema = mongoose.Schema(
     {
-      id: { type: String, default: uuidv4 },
       name: String,
-      cave: String,
-      year: Number,
+      winery: String,
+      vintage: String,
+      img_url: String,
       country: String,
+      region: String,
       type: String,
       grapes: [String],
       price: Number,
-      matching_food: [String],
+      pairings: [String],
+      average_rating: Number,
       reviews: [String],
-      link: String,
+      url: String,
+      embedding: [Number],
+      sentiment: String,
+      emotions: [String]
     },
     { timestamps: true }
   );
