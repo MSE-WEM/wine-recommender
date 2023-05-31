@@ -15,6 +15,7 @@ spec:
     spec:
       containers:
         - image: mongo
+          imagePullPolicy: Always
           name: mongodb
           ports:
             - containerPort: 27017
@@ -74,6 +75,7 @@ spec:
       containers:
         - name: mongo-express
           image: mongo-express
+          imagePullPolicy: Always
           env:
             - name: ME_CONFIG_MONGODB_SERVER
               value: mongodb-service
@@ -115,6 +117,7 @@ spec:
       containers:
         - name: nodejs-app
           image: ghcr.io/mse-wem/wine-recommender-node-mongo-app:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
