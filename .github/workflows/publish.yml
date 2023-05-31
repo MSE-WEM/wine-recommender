@@ -46,7 +46,8 @@ jobs:
           # Set version
           docker_image_tags=(${{ steps.build-and-push-docker-image-to-github.outputs.docker-image-tags }})
           docker_image_sha_tag="${docker_image_tags[1]}"
-          yq ".spec.template.spec.containers[0].image = \"$docker_image_sha_tag\"" kube-config.yml > new-kube-config.yml && mv new-kube-config.yml kube-config.stateful.yml
+          yq eval 'select(di == 0).spec.template.spec.containers[0].image = "'$docker_image_sha_tag'"' kube-config.yml > new-kube-config.yml && mv new-kube-config.yml kube-config.yml
+          cat kube-config.yml
 
       - name: Deploy on the Kubernetes cluster
         # Only run on main
