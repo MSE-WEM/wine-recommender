@@ -2,46 +2,37 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import uuid
 import time
 import json
 import traceback
 
 # load json file "wine_links.json" into a list
-with open('wine_links.json', 'r') as f:
+with open('data/wine_links_2.json', 'r') as f:
     hrefs = json.load(f)
 
 def scroll_down(driver):
     """A method for scrolling the page."""
 
-    # Get scroll height.
-    last_height = driver.execute_script("return document.body.scrollHeight")
-
-    while True:
+    for i in range(5):
         # Scroll down to the bottom.
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        driver.execute_script("window.scrollBy(0, window.innerHeight * 1.5);")
         # Wait to load the page.
-        time.sleep(2)
-        # Calculate new scroll height and compare with last scroll height.
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-
-        last_height = new_height
+        time.sleep(0.6)
 
 def parse_wine_page(driver):
+    scroll_down(driver)
     # picture class (class name begins with "bottleShot" and may have more classes)
     picture_class = driver.find_element(By.CSS_SELECTOR, "picture[class^='bottleShot']")
     # get pairings div
-    driver.execute_script("window.scrollBy(0, window.innerHeight * 1);")
-    WebDriverWait(driver, 1.5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div[class='foodPairing__foodContainer--1bvxM']")))
+    # driver.execute_script("window.scrollBy(0, window.innerHeight * 1.5);")
+    # WebDriverWait(driver, 1.5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div[class='foodPairing__foodContainer--1bvxM']")))
     pairing_div = driver.find_element(By.CSS_SELECTOR, "div[class='foodPairing__foodContainer--1bvxM']")
     # get text from all divs with no class in the pairings div
     pairings = [div.text.strip() for div in pairing_div.find_elements(By.CSS_SELECTOR, "div:not([class])")]
-    WebDriverWait(driver, 1.5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[class='anchor_anchor__m8Qi- reviewAnchor__anchor--2NKFw communityReview__reviewContent--3xA5s']")))
+    # WebDriverWait(driver, 1.5).until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[class='anchor_anchor__m8Qi- reviewAnchor__anchor--2NKFw communityReview__reviewContent--3xA5s']")))
     reviews = driver.find_elements(By.CSS_SELECTOR, "a[class='anchor_anchor__m8Qi- reviewAnchor__anchor--2NKFw communityReview__reviewContent--3xA5s']")
     # Wait for the page to load and the div to be present
-    scroll_down(driver)
+    
     return {
         'name': driver.find_element(By.CLASS_NAME, 'wine').text.strip(),
         'winery': driver.find_element(By.CLASS_NAME, 'winery').text.strip(),
@@ -52,15 +43,9 @@ def parse_wine_page(driver):
         'type': driver.find_element(By.CSS_SELECTOR, "a[data-cy='breadcrumb-winetype']").text,
         'grapes': [a_tag.text for a_tag in driver.find_elements(By.CSS_SELECTOR, "a[href^='/grapes/']")],
         # get the price only as a number
-        'price': driver.find_element(By.CSS_SELECTOR, "span.purchaseAvailability__currentPrice--3mO4u").text.split(' ')[0],
+        'price': float(driver.find_element(By.CSS_SELECTOR, "span.purchaseAvailability__currentPrice--3mO4u").text.split(' ')[0].replace(',', '.')),
         'pairings': pairings,
-        'reviews': [
-            {
-                'rating': review.find_element(By.CSS_SELECTOR, "span[class='userRating_ratingNumber__cMtKU']").text.replace(',', '.'),
-                'text': review.find_element(By.CSS_SELECTOR, "span[class='communityReview__reviewText--2bfLj']").text
-            }
-            for review in reviews
-        ],
+        'reviews': [review.find_element(By.CSS_SELECTOR, "span[class='communityReview__reviewText--2bfLj']").text.strip() for review in reviews],
         'average_rating': driver.find_element(By.CSS_SELECTOR, "div[class='vivinoRating_averageValue__uDdPM']").text.replace(',', '.'),
         'url': driver.current_url,
     }
@@ -68,7 +53,7 @@ def parse_wine_page(driver):
 data = []
 
 # create a new Firefox session
-driver = webdriver.Firefox()
+driver = webdriver.Chrome()
 # get a random first page
 driver.get("https://google.ch")
 # maximize the browser window
@@ -105,6 +90,6 @@ print('The missing links are: ')
 print(error_links)
 
 # save the hrefs to a file
-with open('selenium_wine_scrapped_data.json', 'w', encoding='utf-8') as f:
+with open('data/wine_scrapped_data_2.json', 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=4)
 
