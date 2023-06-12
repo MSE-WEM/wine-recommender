@@ -14,9 +14,9 @@ module.exports = mongoose => {
       average_rating: Number,
       reviews: [String],
       url: String,
-      embedding: [Number],
-      sentiment: String,
-      emotions: [String]
+      pairings_embedding: [Number],
+      sentiment: Number,
+      emotion: String
     },
     { timestamps: true }
   );

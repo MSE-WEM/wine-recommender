@@ -24,9 +24,9 @@ exports.create = (req, res) => {
         average_rating: req.body.average_rating,
         reviews: req.body.reviews,
         url: req.body.url,
-        embedding: req.body.embedding,
+        pairings_embedding: req.body.pairings_embedding,
         sentiment: req.body.sentiment,
-        emotions: req.body.emotions
+        emotion: req.body.emotion
     });
 
     // Save Wine in the database
@@ -67,9 +67,9 @@ exports.createMany = (req, res) => {
             average_rating: wine.average_rating,
             reviews: wine.reviews,
             url: wine.url,
-            embedding: wine.embedding,
+            pairings_embedding: wine.pairings_embedding,
             sentiment: wine.sentiment,
-            emotions: wine.emotions
+            emotion: wine.emotion
         });
     });
 
