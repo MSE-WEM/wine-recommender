@@ -5,7 +5,7 @@ module.exports = mongoose => {
             type: String,
             ingredients: [String],
             url: String,
-            embedding: [Number]
+            pairings_embedding: [Number]
         },
         { timestamps: true }
     );
