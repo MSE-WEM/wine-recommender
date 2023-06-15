@@ -93,12 +93,12 @@ function App() {
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{mr: 2, display: {md: 'none'}}}
+                        sx={{display: {md: 'none'}}}
                     >
                         {mobileOpen ? <CloseIcon/> : <MenuIcon/>}
                     </IconButton>
                     <Grid container justifyContent={"space-between"} alignItems={"center"} sx={{height: "100%"}}>
-                        <Grid item>
+                        <Grid item sx={{ml: 1}}>
                             <Link color={"inherit"} href={"/"} underline={"none"}>
                                 <img src={colorMode === 'light' ? "/logo512_light.png" : "/logo512.png"}
                                      alt={"Wine Recommender"} height={"30px"}

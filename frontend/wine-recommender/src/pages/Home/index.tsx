@@ -21,6 +21,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     const [recipe, setRecipe] = React.useState<any>(null);
     const [recipes, setRecipes] = React.useState<any[]>([]);
     const [ingredients, setIngredients] = React.useState<any[]>([]);
+    const [areIngredientsReady, setAreIngredientsReady] = React.useState(false);
     const [selectedIngredients, setSelectedIngredients] = React.useState<string[]>([]);
     const [priceMin, setPriceMin] = React.useState(0);
     const [priceMax, setPriceMax] = React.useState(1000);
@@ -61,6 +62,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
         const ingredientsList = await getIngredients();
         if (ingredientsList) {
             setIngredients(ingredientsList);
+            setAreIngredientsReady(true);
         }
     }
 
@@ -75,20 +77,13 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     }
 
     React.useEffect(() => {
-        // on filter change, use listElements to update the list only if the user stopped typing for 1000ms
         const timeout = setTimeout(() => {
             setAreWinesReady(false);
             fetchWines();
         }, 300);
         return () => clearTimeout(timeout);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [priceRange]);
-
-    React.useEffect(() => {
-        setAreWinesReady(false);
-        fetchWines();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [recipe, isRedWine, selectedCountries]);
+    }, [recipe, isRedWine, selectedCountries, priceRange]);
 
     React.useEffect(() => {
         fetchCountries();
@@ -96,6 +91,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     }, [isRedWine]);
 
     React.useEffect(() => {
+        setAreIngredientsReady(false);
         fetchIngredients();
         fetchCountries();
         fetchWinePriceRange();
@@ -109,6 +105,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                           recipes={recipes}
                           setRecipes={setRecipes}
                           ingredients={ingredients}
+                          areIngredientsReady={areIngredientsReady}
                           recipe={recipe}
                           setRecipe={setRecipe}
                           selectIngredients={selectedIngredients}

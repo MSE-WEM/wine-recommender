@@ -54,6 +54,7 @@ export const FilterDrawer: React.FC<{
     recipes: any[],
     setRecipes: any,
     ingredients: any[],
+    areIngredientsReady: boolean,
     recipe: any,
     setRecipe: any,
     selectIngredients: string[],
@@ -74,6 +75,7 @@ export const FilterDrawer: React.FC<{
           recipes,
           setRecipes,
           ingredients,
+          areIngredientsReady,
           recipe,
           setRecipe,
           selectIngredients,
@@ -119,7 +121,6 @@ export const FilterDrawer: React.FC<{
 
         (async () => {
             const recipesList = await getRecipes(selectIngredients);
-            await sleep(1e3); // For demo purposes.
 
             if (active) {
                 setRecipes(recipesList);
@@ -204,6 +205,7 @@ export const FilterDrawer: React.FC<{
                         id={"ingredients-filter"}
                         size={"small"}
                         options={ingredients}
+                        loading={!areIngredientsReady}
                         disableCloseOnSelect
                         getOptionLabel={(option) => remove_first_stop_word(option)}
                         renderOption={(props, option, {selected}) => (
@@ -221,7 +223,20 @@ export const FilterDrawer: React.FC<{
                         )}
                         value={selectIngredients || []}
                         renderInput={(params) => (
-                            <TextField {...params} label={"Ingrédients"} placeholder={"Ingrédients"}/>
+                            <TextField
+                                {...params}
+                                label={"Ingrédients"}
+                                placeholder={"Ingrédients"}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <React.Fragment>
+                                            {!areIngredientsReady ? <CircularProgress color={"inherit"} size={20}/> : null}
+                                            {params.InputProps.endAdornment}
+                                        </React.Fragment>
+                                    ),
+                                }}
+                            />
                         )}
                         onChange={(event, value) => {
                             setSelectIngredients(value);

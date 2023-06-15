@@ -38,7 +38,7 @@ jobs:
       - name: Build app
         working-directory: frontend/wine-recommender
         env:
-          REACT_ENV_API_URL: https://api-wine-recommender.kube.isc.heia-fr.ch
+          REACT_APP_API_URL: https://api-wine-recommender.kube.isc.heia-fr.ch
           # So it does not treat warnings as errors
           CI: false
         run: npm run build
@@ -60,7 +60,7 @@ jobs:
         shell: bash
         working-directory: ./frontend/wine-recommender/kubernetes
         env:
-          REACT_ENV_API_URL: https://api-wine-recommender.kube.isc.heia-fr.ch
+          REACT_APP_API_URL: https://api-wine-recommender.kube.isc.heia-fr.ch
         run: |
           # Set version
           docker_image_tags=(${{ steps.build-and-push-docker-image-to-github.outputs.docker-image-tags }})

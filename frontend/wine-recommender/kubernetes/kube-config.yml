@@ -20,7 +20,7 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: REACT_ENV_API_URL
+            - name: REACT_APP_API_URL
               value: http://nodejs-app-service:80
 
 ---
