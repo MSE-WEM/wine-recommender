@@ -24,7 +24,7 @@ module.exports = app => {
     router.get("/wines/countries", wines.findAllCountries);
 
     // Retrieve wines by pairing
-    router.get("/wines/pairing", wines.findByPairing);
+    router.get("/wines/pairing/type/:type", wines.findByPairing);
 
     // Retrieve price range
     router.get("/wines/price", wines.findPriceRange);

@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import { FilterDrawer } from '../../components/FilterDrawer';
 import { WineDataGrid } from '../../components/WineDataGrid';
-import { getWines, getIngredients, getWineCountries, getWinePriceRange } from '../../utils/api';
+import { getWines, getWinesByPairing, getIngredients, getWineCountries, getWinePriceRange } from '../../utils/api';
 import { remove_first_stop_word } from '../../utils/functions';
 
 const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, handleOpen}) => {
@@ -42,8 +42,16 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
         }
     }
 
-    const fetchWines = async () => {
+    const fetchAllWines = async () => {
         const winesList = await getWines(isRedWine, priceRange, selectedCountries);
+        if (winesList) {
+            setWines(winesList);
+            setAreWinesReady(true);
+        }
+    }
+
+    const fetchWines = async () => {
+        const winesList = await getWinesByPairing(recipe.pairings_embedding, isRedWine, priceRange, selectedCountries);
         if (winesList) {
             setWines(winesList);
             setAreWinesReady(true);
@@ -79,7 +87,11 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     React.useEffect(() => {
         const timeout = setTimeout(() => {
             setAreWinesReady(false);
-            fetchWines();
+            if (recipe) {
+                fetchWines();
+            } else {
+                fetchAllWines();
+            }
         }, 300);
         return () => clearTimeout(timeout);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,8 +120,8 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                           areIngredientsReady={areIngredientsReady}
                           recipe={recipe}
                           setRecipe={setRecipe}
-                          selectIngredients={selectedIngredients}
-                          setSelectIngredients={setSelectedIngredients}
+                          selectedIngredients={selectedIngredients}
+                          setSelectedIngredients={setSelectedIngredients}
                           isRedWine={isRedWine}
                           setIsRedWine={setIsRedWine}
                           countries={countries}
@@ -146,7 +158,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                             </Typography>
                             <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
                                 {recipe.ingredients.map((ingredient: any, index: number) => (
-                                    <Chip color={"primary"} label={remove_first_stop_word(ingredient)}
+                                    <Chip color={"primary"} label={remove_first_stop_word(ingredient.name)}
                                           key={ingredient + index}/>
                                 ))}
                             </Box>

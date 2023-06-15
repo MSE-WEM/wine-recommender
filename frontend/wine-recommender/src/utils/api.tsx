@@ -23,6 +23,28 @@ export const getWines = async (isRedWine: boolean, priceRange: number[], countri
     return [];
 }
 
+export const getWinesByPairing = async (pairing: number[], isRedWine: boolean, priceRange: number[], countries: string[]) => {
+    const type = isRedWine ? 'red' : 'white';
+    let query = `${API_URL}/api/wines/pairing/type/${type}`;
+
+    if (priceRange.length > 0) {
+        query += `?priceMin=${priceRange[0]}&priceMax=${priceRange[1]}`;
+    }
+    if (countries.length > 0) {
+        query += `&countries=${countries.join(',')}`;
+    }
+    if (pairing) {
+        console.log(pairing);
+        query += `&pairing=${pairing.join(',')}`;
+    }
+
+    const response = await fetch(query, {headers: HEADERS});
+    if (response.status === 200) {
+        return await response.json();
+    }
+    return [];
+}
+
 export const getRecipes = async (ingredients: string[]) => {
     let query = `${API_URL}/api/recipes`;
     if (ingredients.length > 0) {

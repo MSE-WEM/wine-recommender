@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { Box, Container, IconButton, LinearProgress, Modal } from '@mui/material';
-import { Close, Link, Star, StarHalf, StarOutline } from '@mui/icons-material';
+import {
+    Close,
+    Link,
+    Star,
+    StarHalf,
+    StarOutline,
+    SentimentDissatisfied,
+    SentimentVeryDissatisfied,
+    SentimentNeutral,
+    SentimentSatisfied,
+    SentimentSatisfiedAlt
+} from '@mui/icons-material';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -22,6 +33,15 @@ const roundToHalf = (num: number) => {
     return Math.round(num * 2) / 2;
 }
 
+const toPercentage = (num: number) => {
+    // round to 2 decimal places
+    return `${(num * 100).toFixed(2)}%`;
+}
+
+const randomUUID = () => {
+    return Math.random().toString(36).substring(7);
+}
+
 export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wines, loading}) => {
     const [imgUrl, setImgUrl] = React.useState<string>('');
     const [imgLabel, setImgLabel] = React.useState<string>('');
@@ -40,6 +60,7 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                     </Box></Container>
             </Modal>
             <DataGrid
+                getRowId={() => randomUUID()}
                 sx={{
                     maxWidth: '100%', overflowX: 'scroll',
                     [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
@@ -54,11 +75,18 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                 slots={{loadingOverlay: LinearProgress}}
                 initialState={{
                     pagination: {paginationModel: {pageSize: 10}},
+                    columns: {
+                        columnVisibilityModel: {
+                            _id: false,
+                            type: false
+                        }
+                    }
                 }}
                 pageSizeOptions={[5, 10, 25]}
                 columns={[
+                    {field: '_id', headerName: 'id', width: 70},
                     {
-                        field: 'img_url', headerName: 'Img', width: 20, align: 'center',
+                        field: 'img_url', headerName: '', width: 20, align: 'center',
                         renderCell: (params: any) => {
                             return (
                                 <>
@@ -78,7 +106,7 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                     {flex: 1, field: 'name', headerName: 'Nom', minWidth: 200},
                     {flex: 1, field: 'winery', headerName: 'Cave', minWidth: 150},
                     {field: 'vintage', headerName: 'Millésime', width: 80, align: 'center'},
-                    {field: 'type', headerName: 'Type', width: 80},
+                    {field: 'type', headerName: 'Type', width: 80,},
                     {
                         field: 'price', headerName: 'Prix', width: 100,
                         valueFormatter: (params: any) => {
@@ -103,8 +131,31 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                             }
                             return (
                                 <div style={{display: 'flex', justifyContent: 'center'}}
-                                     title={rating.toString()}>
+                                     title={params.value}>
                                     {stars}
+                                </div>
+                            );
+                        }
+                    },
+                    {
+                        field: 'sentiment', headerName: 'Sentiment', width: 100, align: 'center',
+                        renderCell: (params: any) => {
+                            let sentiment;
+                            if (params.value < 0.2) {
+                                sentiment = <SentimentVeryDissatisfied style={{color: 'red'}}/>;
+                            } else if (params.value < 0.4) {
+                                sentiment = <SentimentDissatisfied style={{color: 'orange'}}/>;
+                            } else if (params.value < 0.6) {
+                                sentiment = <SentimentNeutral style={{color: 'gold'}}/>;
+                            } else if (params.value < 0.8) {
+                                sentiment = <SentimentSatisfied style={{color: 'limegreen'}}/>;
+                            } else {
+                                sentiment = <SentimentSatisfiedAlt style={{color: 'green'}}/>;
+                            }
+                            return (
+                                <div style={{display: 'flex', justifyContent: 'center'}}
+                                        title={toPercentage(params.value)}>
+                                    {sentiment}
                                 </div>
                             );
                         }
