@@ -184,16 +184,74 @@ exports.deleteAll = (req, res) => {
         });
 };
 
-// Find all published Wines
-exports.findAllPublished = (req, res) => {
-    Wine.find({ published: true })
+// Find all Wines by type and/or countries
+exports.findByTypeAndCountries = (req, res) => {
+    const type = req.params.type;
+    const countries = req.query.countries;
+    const priceMin = req.query.priceMin;
+    const priceMax = req.query.priceMax;
+    var condition = {};
+    if (type) {
+        condition.type = type === "red" ? "Vin rouge" : "Vin blanc";
+    }
+    if (countries) {
+        condition.country = { $in: countries.split(',') };
+    }
+    if (priceMin && priceMax) {
+        condition.price = { $gte: priceMin, $lte: priceMax };
+    } else if (priceMin) {
+        condition.price = { $gte: priceMin };
+    } else if (priceMax) {
+        condition.price = { $lte: priceMax };
+    }
+
+    Wine.find(condition)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Wines."
+                    err.message || `Some error occurred while retrieving Wines with type ${type} and countries ${countries}.`
             });
         });
-};
+}
+
+// Find all countries
+exports.findAllCountries = (req, res) => {
+    const type = req.query.type;
+    var condition = {};
+    if (type) {
+        condition.type = type === "red" ? "Vin rouge" : "Vin blanc";
+    }
+
+    Wine.find(condition)
+        .distinct('country')
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || `Some error occurred while retrieving countries with type ${type}.`
+            });
+        });
+}
+
+// Get the wines price range
+exports.findPriceRange = (req, res) => {
+    Wine.find({})
+        .then(data => {
+            const prices = data.map(wine => wine.price);
+            res.send({
+                min: Math.min(...prices),
+                max: Math.max(...prices)
+            });
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || `Some error occurred while retrieving price range with type ${type}.`
+            });
+        });
+}

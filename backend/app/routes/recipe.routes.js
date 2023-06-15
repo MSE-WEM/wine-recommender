@@ -12,16 +12,22 @@ module.exports = app => {
     router.post("/recipes/many", recipes.createMany);
 
     // Retrieve all Recipes
-    router.get("/recipes", recipes.findAll);
+    router.get("/recipes/all", recipes.findAll);
 
     // Retrieve a single Recipe with id
-    router.get("/recipes/:id", recipes.findOne);
+    router.get("/recipe/:id", recipes.findOne);
+
+    // Retrieve recipes by name and/or ingredients
+    router.get("/recipes", recipes.findByNameAndIngredients);
+
+    // Retrieve all ingredients
+    router.get("/recipes/ingredients", recipes.findAllIngredients);
 
     // Update a Recipe with id
-    router.put("/recipes:id", recipes.update);
+    router.put("/recipe/:id", recipes.update);
 
     // Delete a Recipe with id
-    router.delete("/recipes/:id", recipes.delete);
+    router.delete("/recipe/:id", recipes.delete);
 
     // Delete all Recipes
     router.delete("/", recipes.deleteAll);

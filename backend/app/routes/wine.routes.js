@@ -12,13 +12,22 @@ module.exports = app => {
     router.post("/wines/many", wines.createMany);
 
     // Retrieve all Wines
-    router.get("/wines", wines.findAll);
+    router.get("/wines/all", wines.findAll);
 
     // Retrieve a single Wine with id
-    router.get("/wines/:id", wines.findOne);
+    router.get("/wine/:id", wines.findOne);
+
+    // Retrieve wines by type and/or countries
+    router.get("/wines/type/:type", wines.findByTypeAndCountries);
+
+    // Retrieve all countries
+    router.get("/wines/countries", wines.findAllCountries);
+
+    // Retrieve price range
+    router.get("/wines/price", wines.findPriceRange);
 
     // Update a Wine with id
-    router.put("/wines:id", wines.update);
+    router.put("/wines/:id", wines.update);
 
     // Delete a Wine with id
     router.delete("/wines/:id", wines.delete);
