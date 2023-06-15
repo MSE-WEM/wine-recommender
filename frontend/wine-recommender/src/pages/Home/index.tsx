@@ -3,26 +3,130 @@ import {
     Container,
     Typography,
     Toolbar,
+    Card,
+    Chip,
 } from '@mui/material';
 import React from 'react';
 import { FilterDrawer } from '../../components/FilterDrawer';
 import { WineDataGrid } from '../../components/WineDataGrid';
-
-const isSmartphone = (): boolean => {
-    return window.innerWidth < 600;
-}
-const maxWidth = isSmartphone() ? '100%' : 600;
+import { getWines, getIngredients, getWineCountries, getWinePriceRange } from '../../utils/api';
+import { remove_first_stop_word } from '../../utils/functions';
 
 const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, handleOpen}) => {
+    const [isRedWine, setIsRedWine] = React.useState(true);
+    const [wines, setWines] = React.useState<any[]>([]);
+    const [countries, setCountries] = React.useState<any[]>([]);
+    const [selectedCountries, setSelectedCountries] = React.useState<string[]>([]);
+    const [areWinesReady, setAreWinesReady] = React.useState(false);
+    const [recipe, setRecipe] = React.useState<any>(null);
+    const [recipes, setRecipes] = React.useState<any[]>([]);
+    const [ingredients, setIngredients] = React.useState<any[]>([]);
+    const [areIngredientsReady, setAreIngredientsReady] = React.useState(false);
+    const [selectedIngredients, setSelectedIngredients] = React.useState<string[]>([]);
+    const [priceMin, setPriceMin] = React.useState(0);
+    const [priceMax, setPriceMax] = React.useState(1000);
+    const [priceRange, setPriceRange] = React.useState<number[]>([0, 1000]);
+
+    const resetFilters = () => {
+        setRecipe(null);
+        setSelectedIngredients([]);
+        setIsRedWine(true);
+        setSelectedCountries([]);
+        setPriceRange([priceMin, priceMax]);
+    }
+
+    const fetchCountries = async () => {
+        const countriesList = await getWineCountries(isRedWine);
+        if (countries) {
+            checkSelectedCountries(countriesList);
+        }
+    }
+
+    const fetchWines = async () => {
+        const winesList = await getWines(isRedWine, priceRange, selectedCountries);
+        if (winesList) {
+            setWines(winesList);
+            setAreWinesReady(true);
+        }
+    }
+
+    const fetchWinePriceRange = async () => {
+        const priceRange = await getWinePriceRange();
+        if (priceRange) {
+            setPriceMin(priceRange.min);
+            setPriceMax(priceRange.max);
+        }
+    }
+
+    const fetchIngredients = async () => {
+        const ingredientsList = await getIngredients();
+        if (ingredientsList) {
+            setIngredients(ingredientsList);
+            setAreIngredientsReady(true);
+        }
+    }
+
+    const checkSelectedCountries = (countriesList: string[]) => {
+        setCountries(countriesList);
+        // if selected countries is not a subset of the new countries list, remove the ones that are not in the list anymore
+        if (selectedCountries.length > 0 && !selectedCountries.every((c: any) => countriesList.find((cl: any) => cl === c))) {
+            // remove countries that are not in the list anymore
+            const newSelectedCountries = selectedCountries.filter((c: any) => countriesList.find((cl: any) => cl === c));
+            setSelectedCountries(newSelectedCountries);
+        }
+    }
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            setAreWinesReady(false);
+            fetchWines();
+        }, 300);
+        return () => clearTimeout(timeout);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [recipe, isRedWine, selectedCountries, priceRange]);
+
+    React.useEffect(() => {
+        fetchCountries();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isRedWine]);
+
+    React.useEffect(() => {
+        setAreIngredientsReady(false);
+        fetchIngredients();
+        fetchCountries();
+        fetchWinePriceRange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <Box sx={{display: 'flex'}}>
-            <FilterDrawer mobileOpen={mobileOpen} handleOpen={handleOpen}/>
-            <Box component="main" sx={{flexGrow: 1, p: 2, pt: 4, pb: 3}}>
+            <FilterDrawer mobileOpen={mobileOpen}
+                          handleOpen={handleOpen}
+                          recipes={recipes}
+                          setRecipes={setRecipes}
+                          ingredients={ingredients}
+                          areIngredientsReady={areIngredientsReady}
+                          recipe={recipe}
+                          setRecipe={setRecipe}
+                          selectIngredients={selectedIngredients}
+                          setSelectIngredients={setSelectedIngredients}
+                          isRedWine={isRedWine}
+                          setIsRedWine={setIsRedWine}
+                          countries={countries}
+                          selectedCountries={selectedCountries}
+                          setSelectedCountries={setSelectedCountries}
+                          priceMin={priceMin}
+                          priceMax={priceMax}
+                          priceRange={priceRange}
+                          setPriceRange={setPriceRange}
+                          resetFilters={resetFilters}
+            />
+            <Box component={"main"} sx={{flexGrow: 1, p: 2, pt: 4, pb: 4}} width={1}>
                 <Toolbar/>
                 <Container>
                     <Typography
                         component="h1"
-                        variant="h2"
+                        variant="h3"
                         align="center"
                         color="text.primary"
                         gutterBottom
@@ -34,8 +138,23 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                         recettes de Marmiton.
                     </Typography>
                 </Container>
-                <Container sx={{py: 4, maxWidth: maxWidth}}>
-                    <WineDataGrid/>
+                {recipe ? (
+                    <Container>
+                        <Card sx={{p: 2}}>
+                            <Typography variant="h5" align="justify" color="text.secondary" paragraph>
+                                {recipe.name}
+                            </Typography>
+                            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
+                                {recipe.ingredients.map((ingredient: any, index: number) => (
+                                    <Chip color={"primary"} label={remove_first_stop_word(ingredient)}
+                                          key={ingredient + index}/>
+                                ))}
+                            </Box>
+                        </Card>
+                    </Container>
+                ) : null}
+                <Container sx={{py: 2}}>
+                    <WineDataGrid wines={wines} loading={!areWinesReady}/>
                 </Container>
             </Box>
         </Box>

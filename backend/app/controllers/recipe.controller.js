@@ -162,9 +162,17 @@ exports.deleteAll = (req, res) => {
         });
 };
 
-// Find all published Recipes
-exports.findAllPublished = (req, res) => {
-    Recipe.find({ published: true })
+// Find by name and/or ingredients
+exports.findByNameAndIngredients = (req, res) => {
+    const name = req.query.name;
+    const ingredients = req.query.ingredients;
+
+    var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
+    if (ingredients) {
+        condition.ingredients = { $all: ingredients.split(',') };
+    }
+
+    Recipe.find(condition)
         .then(data => {
             res.send(data);
         })
@@ -174,4 +182,25 @@ exports.findAllPublished = (req, res) => {
                     err.message || "Some error occurred while retrieving Recipes."
             });
         });
-};
+}
+
+// Find all ingredients
+exports.findAllIngredients = (req, res) => {
+    // ingredients are stored as an array of strings in each recipe
+    // we need to get all ingredients from all recipes and then remove duplicates
+    Recipe.find({})
+        .then(data => {
+            const ingredients = data.reduce((acc, recipe) => {
+                return acc.concat(recipe.ingredients);
+            }, []);
+            const uniqueIngredients = [...new Set(ingredients)];
+            res.send(uniqueIngredients);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving Recipes."
+            });
+        });
+}
+
