@@ -1,6 +1,23 @@
 const db = require("../models");
 const Wine = db.wines;
 
+// Dot product
+const dotProduct = (vecA, vecB) => {
+    let product = 0;
+    for (let i = 0; i < vecA.length; i++) {
+        product += vecA[i] * vecB[i];
+    }
+    return product;
+};
+
+// Cosine similarity
+const cosineSimilarity = (vecA, vecB) => {
+    let dotProd = dotProduct(vecA, vecB);
+    let magA = Math.sqrt(dotProduct(vecA, vecA));
+    let magB = Math.sqrt(dotProduct(vecB, vecB));
+    return dotProd / (magA * magB);
+};
+
 // Create and Save a new Wine
 exports.create = (req, res) => {
     // Validate request
@@ -252,6 +269,38 @@ exports.findPriceRange = (req, res) => {
             res.status(500).send({
                 message:
                     err.message || `Some error occurred while retrieving price range with type ${type}.`
+            });
+        });
+}
+
+// Get wines that has most similar pairing as current recipe
+exports.findByPairing = (req, res) => {
+    const recipePairingEmbedding = req.query.pairing;
+    Wine.find({})
+        .then(data => {
+            const wines = data.map(wine => {
+                return {
+                    id: wine._id,
+                    name: wine.name,
+                    type: wine.type,
+                    country: wine.country,
+                    price: wine.price,
+                    average_rating: wine.average_rating,
+                    reviews: wine.reviews,
+                    url: wine.url,
+                    pairings_embedding: wine.pairings_embedding,
+                    sentiment: wine.sentiment,
+                    emotion: wine.emotion,
+                    similarity: cosineSimilarity(recipePairingEmbedding, wine.pairings_embedding)
+                }
+            });
+            wines.sort((a, b) => b.similarity - a.similarity);
+            res.send(wines.slice(0, 5));
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || `Some error occurred while retrieving wines with pairing ${recipePairingEmbedding}.`
             });
         });
 }
