@@ -186,21 +186,47 @@ exports.findByNameAndIngredients = (req, res) => {
 
 // Find all ingredients
 exports.findAllIngredients = (req, res) => {
+    const selectedIngredients = req.query.ingredients;
+    // select ingredients from all recipes that have all selected ingredients
     // ingredients are stored as an array of strings in each recipe
-    // list all ingredients by aggregating all ingredients from all recipes and ordering them by occurence
-    Recipe.aggregate([
-        { $unwind: "$ingredients" },
-        { $group: { _id: "$ingredients", count: { $sum: 1 } } },
-        { $sort: { count: -1 } }
-    ])
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message
+    // list all ingredients by aggregating all ingredients from all recipes and ordering them by occurrence
+    if (!selectedIngredients || selectedIngredients.length == 0) {
+        Recipe
+            .aggregate([
+                { $unwind: "$ingredients" },
+                { $group: { _id: "$ingredients", count: { $sum: 1 } } },
+                { $sort: { count: -1 } }
+            ])
+            .then(data => {
+                // remove count and return only ingredients
+                data = data.map(ingredient => ingredient._id);
+                res.send(data);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message
+                });
             });
-        });
+    } else {
+        Recipe
+            .aggregate([
+                { $match: { ingredients: { $all: selectedIngredients.split(',') } } },
+                { $unwind: "$ingredients" },
+                { $group: { _id: "$ingredients", count: { $sum: 1 } } },
+                { $sort: { count: -1 } }
+            ])
+            .then(data => {
+                // remove count and return only ingredients
+                data = data.map(ingredient => ingredient._id);
+                res.send(data);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message
+                });
+            });           
+    }
 }
 
