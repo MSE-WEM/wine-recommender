@@ -3,7 +3,7 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { Box, Container, IconButton, LinearProgress, Modal } from '@mui/material';
 import {
     Close,
-    Link,
+    OpenInNew,
     Star,
     StarHalf,
     StarOutline,
@@ -166,7 +166,7 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                             <IconButton href={params.value} target={"_blank"} color={"primary"}
                                         title={"Voir sur Vivino"}
                             >
-                                <Link/>
+                                <OpenInNew/>
                             </IconButton>
                         )
                     },

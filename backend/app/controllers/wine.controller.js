@@ -3,13 +3,10 @@ const Wine = db.wines;
 
 // Dot product
 const dotProduct = (vecA, vecB) => {
-    console.log(vecA);
-    console.log(vecB);
     let product = 0;
     for (let i = 0; i < vecA.length; i++) {
         product += vecA[i] * vecB[i];
     }
-    console.log(product);
     return product;
 };
 
@@ -18,7 +15,6 @@ const cosineSimilarity = (vecA, vecB) => {
     let dotProd = dotProduct(vecA, vecB);
     let magA = Math.sqrt(dotProduct(vecA, vecA));
     let magB = Math.sqrt(dotProduct(vecB, vecB));
-    console.log(dotProd / (magA * magB));
     return dotProd / (magA * magB);
 };
 
@@ -279,13 +275,7 @@ exports.findPriceRange = (req, res) => {
 
 // Get wines that has most similar pairing as current recipe
 exports.findByPairing = (req, res) => {
-    let recipePairingEmbedding = req.query.pairing;
-    recipePairingEmbedding = recipePairingEmbedding.split(',');
-    recipePairingEmbedding = recipePairingEmbedding.map(Number);
-    console.log(recipePairingEmbedding);
-    console.log( typeof recipePairingEmbedding);
-    // req.query.pairing is a string of array of numbers
-    //recipePairingEmbedding = recipePairingEmbedding.substring(1, recipePairingEmbedding.length - 1).split(',').map(Number);
+    let recipePairingEmbedding = req.query.pairing.split(',').map(Number);
     const type = req.params.type;
     const countries = req.query.countries;
     const priceMin = req.query.priceMin;
@@ -308,15 +298,12 @@ exports.findByPairing = (req, res) => {
         .then(data => {
             const wines = data.map(wine => {
                 wineObject = wine.toObject();
-                console.log(wineObject);
-                console.log(typeof wineObject.pairings_embedding);
                 return {
                     // return wine object but add similarity field
                     ...wineObject,
                     similarity: cosineSimilarity(wineObject.pairings_embedding, recipePairingEmbedding)
                 }
             });
-            console.log(wines);
             wines.sort((a, b) => b.similarity - a.similarity);
             res.send(wines.slice(0, 5));
         })

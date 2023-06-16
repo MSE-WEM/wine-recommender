@@ -10,43 +10,31 @@ import {
     Divider,
     Button,
     Typography,
-    Select,
-    OutlinedInput,
-    Chip,
-    MenuItem,
-    SelectChangeEvent,
-    InputLabel,
-    FormControl,
     CircularProgress,
-    Slider
+    Slider,
+    Stack
 } from '@mui/material';
 import React from 'react';
-import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon } from '@mui/icons-material';
+import {
+    CheckBox as CheckBoxIcon,
+    CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
+    HighlightOffTwoTone,
+    KitchenTwoTone,
+    MenuBookTwoTone,
+    PaymentsTwoTone,
+    PublicTwoTone,
+    WineBarTwoTone
+} from '@mui/icons-material';
 import { remove_first_stop_word } from '../../utils/functions';
 import { getRecipes } from '../../utils/api';
+import { useSelector } from 'react-redux';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
-const checkedIcon = <CheckBoxIcon fontSize="small"/>;
+const icon = <CheckBoxOutlineBlankIcon fontSize={"small"}/>;
+const checkedIcon = <CheckBoxIcon fontSize={"small"}/>;
 const isSmartphone = (): boolean => {
     return window.innerWidth < 600;
 }
 const drawerWidth = isSmartphone() ? '100%' : 500;
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
-function sleep(delay = 0) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
-}
 
 export const FilterDrawer: React.FC<{
     mobileOpen: boolean,
@@ -93,23 +81,15 @@ export const FilterDrawer: React.FC<{
       }) => {
     const [open, setOpen] = React.useState(false);
     const loading = open && recipes.length === 0;
+    const colorMode = useSelector((state: any) => state.colorMode.value);
+    const iconColor = colorMode === 'light' ? 'primary' : 'secondary';
 
     const randomUUID = () => {
         return Math.random().toString(36).substring(7);
-    }
+    };
 
     const handleChangePrice = (event: Event, newValue: number | number[]) => {
         setPriceRange(newValue as number[]);
-    }
-
-    const handleChangeCountries = (event: SelectChangeEvent<typeof countries>) => {
-        const {
-            target: {value},
-        } = event;
-        setSelectedCountries(
-            typeof value === 'string' ? value.split(',') : value,
-        );
-        handleOpen();
     };
 
     React.useEffect(() => {
@@ -181,7 +161,12 @@ export const FilterDrawer: React.FC<{
                                             {loading ? <CircularProgress color={"inherit"} size={20}/> : null}
                                             {params.InputProps.endAdornment}
                                         </React.Fragment>
-                                    ),
+                                    ), startAdornment: (
+                                        <>
+                                            <MenuBookTwoTone color={iconColor}/>
+                                            {params.InputProps.startAdornment}
+                                        </>
+                                    )
                                 }}
                             />
                         )}
@@ -197,6 +182,7 @@ export const FilterDrawer: React.FC<{
                             setRecipe(value);
                             handleOpen();
                         }}
+                        isOptionEqualToValue={(option, value) => option.name === value.name}
                     />
                     <Autocomplete
                         multiple
@@ -207,18 +193,19 @@ export const FilterDrawer: React.FC<{
                         options={ingredients}
                         loading={!areIngredientsReady}
                         disableCloseOnSelect
-                        getOptionLabel={(option) => remove_first_stop_word(option._id)}
+                        filterSelectedOptions
+                        getOptionLabel={(option) => remove_first_stop_word(option)}
                         renderOption={(props, option, {selected}) => (
-                            <li {...props} key={option._id}>
+                            <li {...props} key={option}>
                                 <Checkbox
                                     icon={icon}
                                     checkedIcon={checkedIcon}
                                     color={"primary"}
-                                    value={option._id}
+                                    value={option}
                                     style={{marginRight: 8}}
                                     checked={selected}
                                 />
-                                {remove_first_stop_word(option._id)}
+                                {remove_first_stop_word(option)}
                             </li>
                         )}
                         value={selectedIngredients || []}
@@ -226,15 +213,22 @@ export const FilterDrawer: React.FC<{
                             <TextField
                                 {...params}
                                 label={"Ingrédients"}
-                                placeholder={"Ingrédients"}
+                                placeholder={selectedIngredients.length > 0 ? "" : "Ingrédients"}
                                 InputProps={{
                                     ...params.InputProps,
+                                    startAdornment: (
+                                        <>
+                                            <KitchenTwoTone color={iconColor}/>
+                                            {params.InputProps.startAdornment}
+                                        </>
+                                    ),
                                     endAdornment: (
                                         <React.Fragment>
-                                            {!areIngredientsReady ? <CircularProgress color={"inherit"} size={20}/> : null}
+                                            {!areIngredientsReady ?
+                                                <CircularProgress color={"inherit"} size={20}/> : null}
                                             {params.InputProps.endAdornment}
                                         </React.Fragment>
-                                    ),
+                                    )
                                 }}
                             />
                         )}
@@ -255,7 +249,12 @@ export const FilterDrawer: React.FC<{
                         Vins
                     </Typography>
                     <Grid component={"label"} container alignItems={"center"} spacing={1}>
-                        <Grid item>Vin blanc</Grid>
+                        <Grid item sx={{mt: 2}}>
+                            <Typography component={Stack} direction={"row"} alignItems={"center"} paragraph>
+                                <WineBarTwoTone/>
+                                Vin blanc
+                            </Typography>
+                        </Grid>
                         <Grid item>
                             <Switch
                                 checked={isRedWine}
@@ -266,40 +265,59 @@ export const FilterDrawer: React.FC<{
                                 value={"checkedA"}
                             />
                         </Grid>
-                        <Grid item>Vin rouge</Grid>
+                        <Grid item sx={{mt: 2}}>
+                            <Typography component={Stack} direction={"row"} alignItems={"center"} paragraph>
+                                Vin rouge
+                                <WineBarTwoTone color={"primary"}/>
+                            </Typography>
+                        </Grid>
                     </Grid>
-                    <FormControl sx={{mt: 2}} size={"small"} fullWidth>
-                        <InputLabel id={"countries-label"}>Pays</InputLabel>
-                        <Select
-                            label={"Pays"}
-                            labelId={"countries-label"}
-                            id={"countries"}
-                            multiple
-                            fullWidth
-                            value={selectedCountries}
-                            onChange={handleChangeCountries}
-                            input={<OutlinedInput id="select-multiple-chip" label="Chip"/>}
-                            renderValue={(selected) => (
-                                <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
-                                    {selected.map((value: any) => (
-                                        <Chip key={value} label={value}/>
-                                    ))}
-                                </Box>
-                            )}
-                            MenuProps={MenuProps}
-                        >
-                            {countries.map((country) => (
-                                <MenuItem
-                                    key={country}
-                                    value={country}
-                                >
-                                    {country}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <Box sx={{mt: 3}}>
-                        <Typography id={"range-price-slider-label"} gutterBottom>
+                    <Autocomplete
+                        multiple
+                        sx={{mt: 2}}
+                        id={"countries-filter"}
+                        size={"small"}
+                        options={countries}
+                        disableCloseOnSelect
+                        getOptionLabel={(option) => option}
+                        renderOption={(props, option, {selected}) => (
+                            <li {...props} key={option}>
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    color={"primary"}
+                                    value={option}
+                                    style={{marginRight: 8}}
+                                    checked={selected}
+                                />
+                                {option}
+                            </li>
+                        )}
+                        value={selectedCountries || []}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label={"Pays"}
+                                placeholder={selectedCountries.length > 0 ? "" : "Pays"}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    startAdornment: (
+                                        <>
+                                            <PublicTwoTone color={iconColor}/>
+                                            {params.InputProps.startAdornment}
+                                        </>
+                                    )
+                                }}
+                            />
+                        )}
+                        onChange={(event, value) => {
+                            setSelectedCountries(value);
+                        }}
+                    />
+                    <Box sx={{mt: 3, mx: 1}}>
+                        <Typography id={"range-price-slider-label"} gutterBottom component={Stack} direction={"row"}
+                                    alignItems={"center"}>
+                            <PaymentsTwoTone color={iconColor} sx={{mr: 1}}/>
                             Fourchette de prix (CHF)
                         </Typography>
                         <Box sx={{px: 1}}>
@@ -327,11 +345,11 @@ export const FilterDrawer: React.FC<{
                     </Box>
                     <Divider sx={{mt: 4, mb: 2, mx: -4}} variant={"fullWidth"}/>
                     <Button
+                        endIcon={<HighlightOffTwoTone color={"primary"}/>}
                         sx={{mt: 2}}
                         variant={"contained"}
                         color={"secondary"}
                         fullWidth
-                        size={"large"}
                         onClick={() => {
                             resetFilters();
                             handleOpen();

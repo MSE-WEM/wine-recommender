@@ -4,13 +4,18 @@ import {
     Typography,
     Toolbar,
     Card,
-    Chip,
+    Chip, Grid, IconButton, Stack,
 } from '@mui/material';
 import React from 'react';
 import { FilterDrawer } from '../../components/FilterDrawer';
 import { WineDataGrid } from '../../components/WineDataGrid';
 import { getWines, getWinesByPairing, getIngredients, getWineCountries, getWinePriceRange } from '../../utils/api';
 import { remove_first_stop_word } from '../../utils/functions';
+import {
+    LocalDiningRounded,
+    OpenInNew,
+    RamenDiningTwoTone
+} from '@mui/icons-material';
 
 const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, handleOpen}) => {
     const [isRedWine, setIsRedWine] = React.useState(true);
@@ -67,7 +72,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     }
 
     const fetchIngredients = async () => {
-        const ingredientsList = await getIngredients();
+        const ingredientsList = await getIngredients(selectedIngredients);
         if (ingredientsList) {
             setIngredients(ingredientsList);
             setAreIngredientsReady(true);
@@ -87,6 +92,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     React.useEffect(() => {
         const timeout = setTimeout(() => {
             setAreWinesReady(false);
+            fetchIngredients();
             if (recipe) {
                 fetchWines();
             } else {
@@ -103,8 +109,12 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     }, [isRedWine]);
 
     React.useEffect(() => {
-        setAreIngredientsReady(false);
         fetchIngredients();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedIngredients]);
+
+    React.useEffect(() => {
+        setAreIngredientsReady(false);
         fetchCountries();
         fetchWinePriceRange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,15 +147,15 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                 <Toolbar/>
                 <Container>
                     <Typography
-                        component="h1"
-                        variant="h3"
-                        align="center"
-                        color="text.primary"
+                        component={"h1"}
+                        variant={"h3"}
+                        align={"center"}
+                        color={"text.primary"}
                         gutterBottom
                     >
                         Wine Recommender
                     </Typography>
-                    <Typography variant="h5" align="justify" color="text.secondary" paragraph>
+                    <Typography variant={"h5"} align={"justify"} color={"text.secondary"} paragraph>
                         Wine Recommender est un site de recommandation de vin basé sur les données de Vivino et les
                         recettes de Marmiton.
                     </Typography>
@@ -153,15 +163,29 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                 {recipe ? (
                     <Container>
                         <Card sx={{p: 2}}>
-                            <Typography variant="h5" align="justify" color="text.secondary" paragraph>
-                                {recipe.name}
-                            </Typography>
-                            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
-                                {recipe.ingredients.map((ingredient: any, index: number) => (
-                                    <Chip color={"primary"} label={remove_first_stop_word(ingredient.name)}
-                                          key={ingredient + index}/>
-                                ))}
-                            </Box>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} md={10}>
+                                    <Typography component={Stack} direction={"row"} alignItems={"center"} variant={"h5"}
+                                                align={"justify"} paragraph>
+                                        <RamenDiningTwoTone sx={{mr: 1}} color={"secondary"}/>
+                                        {recipe.name}
+                                    </Typography>
+                                    <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
+                                        {recipe.ingredients.map((ingredient: any, index: number) => (
+                                            <Chip color={"primary"} label={remove_first_stop_word(ingredient)}
+                                                  icon={<LocalDiningRounded/>}
+                                                  key={ingredient + index}/>
+                                        ))}
+                                    </Box>
+                                </Grid>
+                                <Grid item xs={12} md={2}
+                                      sx={{display: 'flex', justifyContent: 'flex-end',}}>
+                                    <IconButton href={recipe.url} target={"_blank"} disableRipple
+                                                aria-label={"Voir sur Marmiton"} title={"Voir sur Marmiton"}>
+                                        <OpenInNew/>
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
                         </Card>
                     </Container>
                 ) : null}

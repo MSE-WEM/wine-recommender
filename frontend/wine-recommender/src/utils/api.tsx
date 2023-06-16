@@ -34,7 +34,6 @@ export const getWinesByPairing = async (pairing: number[], isRedWine: boolean, p
         query += `&countries=${countries.join(',')}`;
     }
     if (pairing) {
-        console.log(pairing);
         query += `&pairing=${pairing.join(',')}`;
     }
 
@@ -45,7 +44,7 @@ export const getWinesByPairing = async (pairing: number[], isRedWine: boolean, p
     return [];
 }
 
-export const getRecipes = async (ingredients: string[]) => {
+export const getRecipes = async (ingredients: any[]) => {
     let query = `${API_URL}/api/recipes`;
     if (ingredients.length > 0) {
         query += `?ingredients=${ingredients.join(',')}`;
@@ -58,8 +57,12 @@ export const getRecipes = async (ingredients: string[]) => {
     return [];
 }
 
-export const getIngredients = async () => {
-    const response = await fetch(`${API_URL}/api/recipes/ingredients`, {headers: HEADERS});
+export const getIngredients = async (selectedIngredients: any[]) => {
+    let query = `${API_URL}/api/recipes/ingredients`;
+    if (selectedIngredients.length > 0) {
+        query += `?ingredients=${selectedIngredients.join(',')}`;
+    }
+    const response = await fetch(query, {headers: HEADERS});
     if (response.status === 200) {
         return await response.json();
     }
