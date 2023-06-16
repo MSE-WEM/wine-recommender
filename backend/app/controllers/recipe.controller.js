@@ -187,19 +187,19 @@ exports.findByNameAndIngredients = (req, res) => {
 // Find all ingredients
 exports.findAllIngredients = (req, res) => {
     // ingredients are stored as an array of strings in each recipe
-    // we need to get all ingredients from all recipes and then remove duplicates
-    Recipe.find({})
+    // list all ingredients by aggregating all ingredients from all recipes and ordering them by occurence
+    Recipe.aggregate([
+        { $unwind: "$ingredients" },
+        { $group: { _id: "$ingredients", count: { $sum: 1 } } },
+        { $sort: { count: -1 } }
+    ])
         .then(data => {
-            const ingredients = data.reduce((acc, recipe) => {
-                return acc.concat(recipe.ingredients);
-            }, []);
-            const uniqueIngredients = [...new Set(ingredients)];
-            res.send(uniqueIngredients);
+            res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Recipes."
+                    err.message
             });
         });
 }

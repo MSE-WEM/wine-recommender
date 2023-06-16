@@ -57,8 +57,8 @@ export const FilterDrawer: React.FC<{
     areIngredientsReady: boolean,
     recipe: any,
     setRecipe: any,
-    selectIngredients: string[],
-    setSelectIngredients: any,
+    selectedIngredients: string[],
+    setSelectedIngredients: any,
     isRedWine: boolean,
     setIsRedWine: any,
     countries: string[],
@@ -78,8 +78,8 @@ export const FilterDrawer: React.FC<{
           areIngredientsReady,
           recipe,
           setRecipe,
-          selectIngredients,
-          setSelectIngredients,
+          selectedIngredients,
+          setSelectedIngredients,
           isRedWine,
           setIsRedWine,
           countries,
@@ -120,7 +120,7 @@ export const FilterDrawer: React.FC<{
         }
 
         (async () => {
-            const recipesList = await getRecipes(selectIngredients);
+            const recipesList = await getRecipes(selectedIngredients);
 
             if (active) {
                 setRecipes(recipesList);
@@ -207,21 +207,21 @@ export const FilterDrawer: React.FC<{
                         options={ingredients}
                         loading={!areIngredientsReady}
                         disableCloseOnSelect
-                        getOptionLabel={(option) => remove_first_stop_word(option)}
+                        getOptionLabel={(option) => remove_first_stop_word(option._id)}
                         renderOption={(props, option, {selected}) => (
-                            <li {...props} key={option}>
+                            <li {...props} key={option._id}>
                                 <Checkbox
                                     icon={icon}
                                     checkedIcon={checkedIcon}
                                     color={"primary"}
-                                    value={option}
+                                    value={option._id}
                                     style={{marginRight: 8}}
                                     checked={selected}
                                 />
-                                {remove_first_stop_word(option)}
+                                {remove_first_stop_word(option._id)}
                             </li>
                         )}
-                        value={selectIngredients || []}
+                        value={selectedIngredients || []}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -239,7 +239,7 @@ export const FilterDrawer: React.FC<{
                             />
                         )}
                         onChange={(event, value) => {
-                            setSelectIngredients(value);
+                            setSelectedIngredients(value);
                         }}
                     />
                     <Divider sx={{mt: 2, mb: 1}}>
