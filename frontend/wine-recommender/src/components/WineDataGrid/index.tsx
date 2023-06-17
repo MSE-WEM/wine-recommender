@@ -43,6 +43,7 @@ const isSmartphone = (): boolean => {
     return window.innerWidth < 600;
 }
 const width = isSmartphone() ? '100%' : '200px';
+const height = isSmartphone() ? '45vh' : 'calc(100vh - 420px)';
 
 const roundToHalf = (num: number) => {
     return Math.round(num * 2) / 2;
@@ -107,7 +108,7 @@ export const WineDataGrid: React.FC<{
                 localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
                 getRowId={() => randomUUID()}
                 sx={{
-                    maxWidth: '100%', overflowX: 'scroll',
+                    maxWidth: '100%', overflowX: 'scroll', overflowY: 'auto', maxHeight: height,
                     [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                         outline: 'none',
                     },
@@ -115,7 +116,7 @@ export const WineDataGrid: React.FC<{
                         {
                             outline: 'none',
                         },
-                }} autoHeight
+                }}
                 loading={loading}
                 slots={{loadingOverlay: LinearProgress, toolbar: recipe ? CustomSelect : null}}
                 initialState={{
@@ -127,7 +128,7 @@ export const WineDataGrid: React.FC<{
                         }
                     }
                 }}
-                pageSizeOptions={[5, 10, 25]}
+                pageSizeOptions={[5, 10, 20]}
                 columns={[
                     {field: '_id', headerName: 'id', width: 70},
                     {

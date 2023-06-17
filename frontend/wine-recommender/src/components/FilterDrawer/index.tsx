@@ -148,6 +148,7 @@ export const FilterDrawer: React.FC<{
                         }}
                         size={"small"}
                         loading={loading}
+                        loadingText={"Chargement..."}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => (
                             <TextField
@@ -192,6 +193,7 @@ export const FilterDrawer: React.FC<{
                         size={"small"}
                         options={ingredients}
                         loading={!areIngredientsReady}
+                        loadingText={"Chargement..."}
                         disableCloseOnSelect
                         filterSelectedOptions
                         getOptionLabel={(option) => remove_first_stop_word(option)}
