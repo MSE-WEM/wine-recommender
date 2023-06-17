@@ -280,6 +280,7 @@ exports.findByPairing = (req, res) => {
     const countries = req.query.countries;
     const priceMin = req.query.priceMin;
     const priceMax = req.query.priceMax;
+    const nbWines = req.query.nbWines;
     var condition = {};
     if (type) {
         condition.type = type === "red" ? "Vin rouge" : "Vin blanc";
@@ -305,7 +306,7 @@ exports.findByPairing = (req, res) => {
                 }
             });
             wines.sort((a, b) => b.similarity - a.similarity);
-            res.send(wines.slice(0, 5));
+            res.send(wines.slice(0, nbWines));
         })
         .catch(err => {
             res.status(500).send({

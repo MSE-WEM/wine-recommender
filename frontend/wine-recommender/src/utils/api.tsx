@@ -23,12 +23,12 @@ export const getWines = async (isRedWine: boolean, priceRange: number[], countri
     return [];
 }
 
-export const getWinesByPairing = async (pairing: number[], isRedWine: boolean, priceRange: number[], countries: string[]) => {
+export const getWinesByPairing = async (pairing: number[], isRedWine: boolean, priceRange: number[], countries: string[], nbWines: number) => {
     const type = isRedWine ? 'red' : 'white';
-    let query = `${API_URL}/api/wines/pairing/type/${type}`;
+    let query = `${API_URL}/api/wines/pairing/type/${type}?nbWines=${nbWines}`;
 
     if (priceRange.length > 0) {
-        query += `?priceMin=${priceRange[0]}&priceMax=${priceRange[1]}`;
+        query += `&priceMin=${priceRange[0]}&priceMax=${priceRange[1]}`;
     }
     if (countries.length > 0) {
         query += `&countries=${countries.join(',')}`;

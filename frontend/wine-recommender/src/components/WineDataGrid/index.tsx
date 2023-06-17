@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import { Box, Container, IconButton, LinearProgress, Modal } from '@mui/material';
+import { DataGrid, gridClasses, frFR } from '@mui/x-data-grid';
+import {
+    Box,
+    Container,
+    FormControl,
+    IconButton,
+    InputLabel,
+    LinearProgress,
+    MenuItem,
+    Modal,
+    Select
+} from '@mui/material';
 import {
     Close,
     OpenInNew,
@@ -29,6 +39,11 @@ const style = {
     overflow: 'auto' as 'auto',
 };
 
+const isSmartphone = (): boolean => {
+    return window.innerWidth < 600;
+}
+const width = isSmartphone() ? '100%' : '200px';
+
 const roundToHalf = (num: number) => {
     return Math.round(num * 2) / 2;
 }
@@ -42,10 +57,39 @@ const randomUUID = () => {
     return Math.random().toString(36).substring(7);
 }
 
-export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wines, loading}) => {
+
+export const WineDataGrid: React.FC<{
+    wines: any[],
+    loading: boolean,
+    recipe: any,
+    nbWines: number,
+    setNbWines: any
+}> = ({wines, loading, recipe, nbWines, setNbWines}) => {
     const [imgUrl, setImgUrl] = React.useState<string>('');
     const [imgLabel, setImgLabel] = React.useState<string>('');
     const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
+
+    const CustomSelect = () => {
+        return (
+            <Box flexGrow={1} sx={{display: 'flex', justifyContent: 'flex-end', p: 2}}>
+                <FormControl variant={"outlined"} size={"small"} sx={{width: width}}>
+                    <InputLabel id={"select-wines-label"}>Nombre de vins proposés</InputLabel>
+                    <Select
+                        labelId={"select-wines-label"}
+                        id={"select-wines"}
+                        value={nbWines}
+                        label={"Nombre de vins proposés"}
+                        onChange={(event: any) => setNbWines(event.target.value)}
+                    >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={20}>20</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
 
     return (
         <>
@@ -60,6 +104,7 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                     </Box></Container>
             </Modal>
             <DataGrid
+                localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
                 getRowId={() => randomUUID()}
                 sx={{
                     maxWidth: '100%', overflowX: 'scroll',
@@ -72,7 +117,7 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                         },
                 }} autoHeight
                 loading={loading}
-                slots={{loadingOverlay: LinearProgress}}
+                slots={{loadingOverlay: LinearProgress, toolbar: recipe ? CustomSelect : null}}
                 initialState={{
                     pagination: {paginationModel: {pageSize: 10}},
                     columns: {
@@ -154,7 +199,7 @@ export const WineDataGrid: React.FC<{ wines: any[], loading: boolean }> = ({wine
                             }
                             return (
                                 <div style={{display: 'flex', justifyContent: 'center'}}
-                                        title={toPercentage(params.value)}>
+                                     title={toPercentage(params.value)}>
                                     {sentiment}
                                 </div>
                             );

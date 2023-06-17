@@ -4,7 +4,10 @@ import {
     Typography,
     Toolbar,
     Card,
-    Chip, Grid, IconButton, Stack,
+    Chip,
+    Grid,
+    IconButton,
+    Stack
 } from '@mui/material';
 import React from 'react';
 import { FilterDrawer } from '../../components/FilterDrawer';
@@ -20,6 +23,7 @@ import {
 const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, handleOpen}) => {
     const [isRedWine, setIsRedWine] = React.useState(true);
     const [wines, setWines] = React.useState<any[]>([]);
+    const [nbWines, setNbWines] = React.useState(5);
     const [countries, setCountries] = React.useState<any[]>([]);
     const [selectedCountries, setSelectedCountries] = React.useState<string[]>([]);
     const [areWinesReady, setAreWinesReady] = React.useState(false);
@@ -56,7 +60,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
     }
 
     const fetchWines = async () => {
-        const winesList = await getWinesByPairing(recipe.pairings_embedding, isRedWine, priceRange, selectedCountries);
+        const winesList = await getWinesByPairing(recipe.pairings_embedding, isRedWine, priceRange, selectedCountries, nbWines);
         if (winesList) {
             setWines(winesList);
             setAreWinesReady(true);
@@ -101,7 +105,7 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
         }, 300);
         return () => clearTimeout(timeout);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [recipe, isRedWine, selectedCountries, priceRange]);
+    }, [recipe, isRedWine, selectedCountries, priceRange, nbWines]);
 
     React.useEffect(() => {
         fetchCountries();
@@ -190,7 +194,8 @@ const Home: React.FC<{ mobileOpen: boolean, handleOpen: any }> = ({mobileOpen, h
                     </Container>
                 ) : null}
                 <Container sx={{py: 2}}>
-                    <WineDataGrid wines={wines} loading={!areWinesReady}/>
+                    <WineDataGrid wines={wines} loading={!areWinesReady} nbWines={nbWines} setNbWines={setNbWines}
+                                  recipe={recipe}/>
                 </Container>
             </Box>
         </Box>
