@@ -109,6 +109,7 @@ export const WineDataGrid: React.FC<{
                 getRowId={() => randomUUID()}
                 sx={{
                     maxWidth: '100%', overflowX: 'scroll', overflowY: 'auto', maxHeight: height,
+
                     [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                         outline: 'none',
                     },
@@ -117,7 +118,7 @@ export const WineDataGrid: React.FC<{
                             outline: 'none',
                         },
                 }}
-                loading={loading}
+                loading={loading} autoHeight
                 slots={{loadingOverlay: LinearProgress, toolbar: recipe ? CustomSelect : null}}
                 initialState={{
                     pagination: {paginationModel: {pageSize: 10}},
