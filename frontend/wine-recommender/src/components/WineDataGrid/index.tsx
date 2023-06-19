@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, gridClasses, frFR } from '@mui/x-data-grid';
+import { DataGrid, gridClasses, frFR, useGridApiRef, GridFooter } from '@mui/x-data-grid';
 import {
     Box,
     Container,
@@ -43,7 +43,6 @@ const isSmartphone = (): boolean => {
     return window.innerWidth < 600;
 }
 const width = isSmartphone() ? '100%' : '200px';
-const height = isSmartphone() ? '45vh' : 'calc(100vh - 420px)';
 
 const roundToHalf = (num: number) => {
     return Math.round(num * 2) / 2;
@@ -69,6 +68,16 @@ export const WineDataGrid: React.FC<{
     const [imgUrl, setImgUrl] = React.useState<string>('');
     const [imgLabel, setImgLabel] = React.useState<string>('');
     const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
+    let height = nbWines === 1 ? (recipe ? 183 : 143) : nbWines === 5 ? (recipe ? 400 : 371) : (recipe ? 650 : 631);
+    //height += recipe ? 0 : 90;
+    console.log('height', height);
+
+    const apiRef = useGridApiRef();
+
+    const handleNbWinesChange = (value: number) => {
+        setNbWines(value);
+        apiRef.current.setPageSize(value);
+    }
 
     const CustomSelect = () => {
         return (
@@ -80,7 +89,7 @@ export const WineDataGrid: React.FC<{
                         id={"select-wines"}
                         value={nbWines}
                         label={"Nombre de vins proposés"}
-                        onChange={(event: any) => setNbWines(event.target.value)}
+                        onChange={(event: any) => handleNbWinesChange(event.target.value)}
                     >
                         <MenuItem value={1}>1</MenuItem>
                         <MenuItem value={5}>5</MenuItem>
@@ -92,8 +101,14 @@ export const WineDataGrid: React.FC<{
         );
     }
 
+    React.useEffect(() => {
+        if (!recipe) {
+            handleNbWinesChange(10);
+        }
+    }, [recipe]);
+
     return (
-        <>
+        <Box sx={{height: 'auto'}}>
             <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <Container sx={style}>
                     <IconButton size="small" sx={{position: 'absolute', top: '0', right: '0'}}
@@ -105,11 +120,17 @@ export const WineDataGrid: React.FC<{
                     </Box></Container>
             </Modal>
             <DataGrid
+                onPaginationModelChange={(params) => {
+                    if (params.pageSize) {
+                        handleNbWinesChange(params.pageSize);
+                    }
+                }}
+                apiRef={apiRef}
                 localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
                 getRowId={() => randomUUID()}
                 sx={{
-                    maxWidth: '100%', overflowX: 'scroll', overflowY: 'auto', maxHeight: height,
-
+                    height: `${height}px`,
+                    maxWidth: '100%', overflowX: 'scroll', overflowY: 'auto',
                     [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                         outline: 'none',
                     },
@@ -118,10 +139,10 @@ export const WineDataGrid: React.FC<{
                             outline: 'none',
                         },
                 }}
-                loading={loading} autoHeight
-                slots={{loadingOverlay: LinearProgress, toolbar: recipe ? CustomSelect : null}}
+                loading={loading}
+                slots={{loadingOverlay: LinearProgress, footer: recipe ? CustomSelect : GridFooter}}
                 initialState={{
-                    pagination: {paginationModel: {pageSize: 10}},
+                    pagination: {paginationModel: {pageSize: nbWines}},
                     columns: {
                         columnVisibilityModel: {
                             _id: false,
@@ -129,6 +150,7 @@ export const WineDataGrid: React.FC<{
                         }
                     }
                 }}
+                hideFooterPagination={!!recipe}
                 pageSizeOptions={[5, 10, 20]}
                 columns={[
                     {field: '_id', headerName: 'id', width: 70},
@@ -217,6 +239,6 @@ export const WineDataGrid: React.FC<{
                             </IconButton>
                         )
                     },
-                ]} rows={wines}/></>
+                ]} rows={wines}/></Box>
     );
 }
